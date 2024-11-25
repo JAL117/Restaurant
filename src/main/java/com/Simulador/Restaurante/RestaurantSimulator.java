@@ -8,10 +8,13 @@ import com.almasb.fxgl.app.scene.FXGLMenu;
 import com.almasb.fxgl.app.scene.SceneFactory;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+
+import java.util.Objects;
 
 public class RestaurantSimulator extends GameApplication {
 
@@ -21,8 +24,8 @@ public class RestaurantSimulator extends GameApplication {
 
     @Override
     protected void initSettings(GameSettings settings) {
-        settings.setWidth(1000);
-        settings.setHeight(700);
+        settings.setWidth(1300);
+        settings.setHeight(650);
         settings.setTitle("Simulador Restaurante");
         settings.setVersion("0.1");
         settings.setMainMenuEnabled(true);
@@ -42,29 +45,32 @@ public class RestaurantSimulator extends GameApplication {
     }
 
     private void createGameEntities() {
+
         Entity background = FXGL.entityBuilder()
                 .at(0, 0)
-                .view(new Rectangle(1000, 700, Color.LIGHTGRAY))
+                .view(createImageView("/assets/textures/background.png", 1300, 850))
                 .buildAndAttach();
 
         Entity diningArea = FXGL.entityBuilder()
-                .at(200, 150)
-                .view(new Rectangle(600, 400, Color.WHITE))
+                .at(300, 150)
+                .view(createImageView("/assets/textures/dining_area.jpg", 1200, 450))
                 .buildAndAttach();
 
+
         Entity kitchen = FXGL.entityBuilder()
-                .at(850, 150)
-                .view(new Rectangle(120, 400, Color.LIGHTYELLOW))
+                .at(1100, 150)
+                .view(createImageView("/assets/textures/kitchen.jpg", 500, 400))
                 .buildAndAttach();
+
 
         Entity waitingArea = FXGL.entityBuilder()
                 .at(30, 150)
-                .view(new Rectangle(120, 400, Color.LIGHTBLUE))
+                .view(createImageView("/assets/textures/waiting_area.jpg", 150, 900))
                 .buildAndAttach();
 
-        addLabel("Cocina", 880, 120);
-        addLabel("Área de espera", 40, 120);
-        addLabel("Área de mesas", 450, 120);
+        addLabel("Cocina", 1150, 60);
+        addLabel("Área de espera", 50, 60);
+        addLabel("Área de mesas", 600, 60);
 
         createTables();
     }
@@ -74,7 +80,7 @@ public class RestaurantSimulator extends GameApplication {
             for (int j = 0; j < 3; j++) {
                 FXGL.entityBuilder()
                         .at(300 + j * 200, 200 + i * 200)
-                        .view(new Rectangle(80, 80, Color.BROWN))
+                        .view(createImageView("/assets/textures/table.jpg", 70, 70))
                         .buildAndAttach();
             }
         }
@@ -82,7 +88,7 @@ public class RestaurantSimulator extends GameApplication {
 
     private void addLabel(String text, double x, double y) {
         Text label = new Text(text);
-        label.setFill(Color.BLACK);
+        label.setFill(Color.WHITE);
         label.setFont(Font.font(20));
         FXGL.entityBuilder()
                 .at(x, y)
@@ -92,10 +98,26 @@ public class RestaurantSimulator extends GameApplication {
 
     private void spawnInitialEntities() {
         for (int i = 0; i < 3; i++) {
-            FXGL.spawn("waiter", 100 + i * 50, 300);
+            FXGL.spawn("waiter", 500 + i * 50, 300);
         }
         for (int i = 0; i < 2; i++) {
-            FXGL.spawn("cook", 880, 200 + i * 100);
+            FXGL.spawn("cook", 1220, 250 + i * 100);
         }
+        for (int i = 0; i < 2; i++) {
+            FXGL.spawn("customer", 100, 200 + i * 50);
+        }
+    }
+
+    private Image loadImage(String path) {
+        return new Image(Objects.requireNonNull(getClass().getResourceAsStream(path)));
+    }
+
+    private ImageView createImageView(String path, double width, double height) {
+        ImageView imageView = new ImageView(loadImage(path));
+        imageView.setFitWidth(width);
+        imageView.setFitHeight(height);
+        imageView .setPreserveRatio(true);
+        imageView.setSmooth(true);
+        return imageView;
     }
 }
