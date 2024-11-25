@@ -25,7 +25,7 @@ public class RestaurantSimulator extends GameApplication {
     @Override
     protected void initSettings(GameSettings settings) {
         settings.setWidth(1300);
-        settings.setHeight(650);
+        settings.setHeight(600);
         settings.setTitle("Simulador Restaurante");
         settings.setVersion("0.1");
         settings.setMainMenuEnabled(true);
@@ -52,34 +52,34 @@ public class RestaurantSimulator extends GameApplication {
                 .buildAndAttach();
 
         Entity diningArea = FXGL.entityBuilder()
-                .at(300, 150)
-                .view(createImageView("/assets/textures/dining_area.jpg", 1200, 450))
+                .at(210, 70)
+                .view(createImageView("/assets/textures/dining_area.jpg", 1200, 500))
                 .buildAndAttach();
 
 
         Entity kitchen = FXGL.entityBuilder()
-                .at(1100, 150)
+                .at(1100, 120)
                 .view(createImageView("/assets/textures/kitchen.jpg", 500, 400))
                 .buildAndAttach();
 
 
         Entity waitingArea = FXGL.entityBuilder()
                 .at(30, 150)
-                .view(createImageView("/assets/textures/waiting_area.jpg", 150, 900))
+                .view(createImageView("/assets/textures/waiting_area.jpg", 100, 500))
                 .buildAndAttach();
 
-        addLabel("Cocina", 1150, 60);
-        addLabel("Área de espera", 50, 60);
-        addLabel("Área de mesas", 600, 60);
+        addLabel("Cocina", 1150, 30);
+        addLabel("Área de espera", 30, 30);
+        addLabel("Área de mesas", 550, 30);
 
         createTables();
     }
 
     private void createTables() {
-        for (int i = 0; i < 2; i++) {
-            for (int j = 0; j < 3; j++) {
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 5; j++) {
                 FXGL.entityBuilder()
-                        .at(300 + j * 200, 200 + i * 200)
+                        .at(300 + j * 150, 110 + i * 120)
                         .view(createImageView("/assets/textures/table.jpg", 70, 70))
                         .buildAndAttach();
             }
@@ -105,6 +105,9 @@ public class RestaurantSimulator extends GameApplication {
         }
         for (int i = 0; i < 2; i++) {
             FXGL.spawn("customer", 100, 200 + i * 50);
+        }
+        for (int i = 0; i < 1; i++) {
+            FXGL.spawn("receptionist", 150, 200 + i * 50);
         }
     }
 

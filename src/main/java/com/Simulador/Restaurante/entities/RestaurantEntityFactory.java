@@ -12,21 +12,28 @@ public class RestaurantEntityFactory implements EntityFactory {
     @Spawns("customer")
     public Entity newCustomer(SpawnData data) {
         return FXGL.entityBuilder(data)
-                .view(new Circle(15, Color.GREEN))
+                .view(new Circle(10, Color.GREEN))
                 .build();
     }
 
     @Spawns("waiter")
     public Entity newWaiter(SpawnData data) {
         return FXGL.entityBuilder(data)
-                .view(new Circle(15, Color.BLUE))
+                .view(new Circle(10, Color.BLUE))
                 .build();
     }
 
     @Spawns("cook")
     public Entity newCook(SpawnData data) {
         return FXGL.entityBuilder(data)
-                .view(new Circle(15, Color.RED))
+                .view(new Circle(10, Color.RED))
+                .build();
+    }
+
+    @Spawns("receptionist")
+    public Entity newReceptionist(SpawnData data){
+        return FXGL.entityBuilder(data)
+                .view(new Circle(10 , Color.YELLOW))
                 .build();
     }
 }
