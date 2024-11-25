@@ -12,6 +12,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.GaussianBlur;
 
 import java.util.Objects;
 
@@ -19,16 +20,19 @@ public class MainMenu extends FXGLMenu {
     public MainMenu() {
         super(MenuType.MAIN_MENU);
 
-        ImageView backgroundImage = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/assets/textures/simulador de restaurante.png"))));
-
+        ImageView backgroundImage = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/assets/textures/restaurante.png"))));
         backgroundImage.setFitWidth(getAppWidth());
         backgroundImage.setFitHeight(getAppHeight());
         backgroundImage.setPreserveRatio(false);
 
+        GaussianBlur blurEffect = new GaussianBlur();
+        blurEffect.setRadius(10);
+        backgroundImage.setEffect(blurEffect);
+
         VBox mainContainer = new VBox(50);
         mainContainer.setAlignment(Pos.CENTER);
         Text title = new Text("Simulador de Restaurante");
-        title.setFont(Font.font(48));
+        title.setFont(Font.font(80));
         title.setFill(Color.WHITE);
         DropShadow dropShadow = new DropShadow();
         dropShadow.setRadius(5.0);
@@ -50,9 +54,34 @@ public class MainMenu extends FXGLMenu {
 
     private Button createStyledButton(String text) {
         Button button = new Button(text);
-        button.setStyle("-fx-background-color: #2196f3; -fx-text-fill: white; -fx-font-size: 20px; -fx-padding: 10 20; -fx-min-width: 200px;");
-        button.setOnMouseEntered(e -> button.setStyle("-fx-background-color: #1976d2; -fx-text-fill: white; -fx-font-size: 20px; -fx-padding: 10 20; -fx-min-width: 200px;"));
-        button.setOnMouseExited(e -> button.setStyle("-fx-background-color: #2196f3; -fx-text-fill: white; -fx-font-size: 20px; -fx-padding: 10 20; -fx-min-width: 200px;"));
+
+
+        button.setStyle("-fx-background-color: linear-gradient(#2196f3, #1976d2); " +
+                "-fx-text-fill: white; " +
+                "-fx-font-size: 20px; " +
+                "-fx-padding: 10 20; " +
+                "-fx-min-width: 200px; " +
+                "-fx-background-radius: 10; " +
+                "-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 5, 0, 0, 1);");
+
+
+        button.setOnMouseEntered(e -> button.setStyle("-fx-background-color: linear-gradient(#1976d2, #1565c0); " +
+                "-fx-text-fill: white; " +
+                "-fx-font-size: 20px; " +
+                "-fx-padding: 10 20; " +
+                "-fx-min-width: 200px; " +
+                "-fx-background-radius: 10; " +
+                "-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.7), 5, 0, 0, 1);"));
+
+
+        button.setOnMouseExited(e -> button.setStyle("-fx-background-color: linear-gradient(#2196f3, #1976d2); " +
+                "-fx-text-fill: white; " +
+                "-fx-font-size: 20px; " +
+                "-fx-padding: 10 20; " +
+                "-fx-min-width: 200px; " +
+                "-fx-background-radius: 10; " +
+                "-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 5, 0, 0, 1);"));
+
         return button;
     }
 }
