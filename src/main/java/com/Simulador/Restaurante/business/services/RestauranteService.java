@@ -4,6 +4,14 @@ import com.Simulador.Restaurante.business.actors.Cocinero;
 import com.Simulador.Restaurante.business.actors.Comensal;
 import com.Simulador.Restaurante.business.actors.Recepcionista;
 import com.Simulador.Restaurante.business.actors.Mesero;
+import com.Simulador.Restaurante.concurrency.monitors.ComidaMonitor;
+import com.Simulador.Restaurante.concurrency.monitors.ComensalMonitor;
+import com.Simulador.Restaurante.concurrency.monitors.MesaMonitor;
+import com.Simulador.Restaurante.concurrency.threads.MeseroThread;
+import com.Simulador.Restaurante.concurrency.threads.CocineroThread;
+import com.Simulador.Restaurante.concurrency.threads.ComensalThread;
+import com.Simulador.Restaurante.concurrency.monitors.OrdenMonitor;
+import com.Simulador.Restaurante.presentation.views.RestauranteView;
 import com.Simulador.Restaurante.business.utils.PoissonDistribution;
 
 
