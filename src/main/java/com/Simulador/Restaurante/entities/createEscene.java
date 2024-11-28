@@ -1,5 +1,6 @@
 package com.Simulador.Restaurante.entities;
 
+import com.Simulador.Restaurante.business.models.Mesa;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import javafx.scene.image.Image;
@@ -49,14 +50,22 @@ public class createEscene {
             for (int j = 0; j < cols; j++) {
                 double posX = startX + j * (70 + spacing);
                 double posY = startY + i * (70 + spacing);
-                Entity table = FXGL.entityBuilder()
+
+                Mesa mesa = new Mesa(i * cols + j + 1);
+                mesa.setPosicion(posX, posY);
+
+                // Crear la entidad y asociar el componente TableEntity
+                Entity tableEntity = FXGL.entityBuilder()
                         .at(posX, posY)
                         .view(createImageView("/assets/textures/table.jpg", 70, 70))
+                        .with(new Table(mesa))
                         .buildAndAttach();
-                tables.add(table);
+
+                tables.add(tableEntity);
             }
         }
     }
+
 
     public void addLabel(String text, double x, double y) {
         Text label = new Text(text);

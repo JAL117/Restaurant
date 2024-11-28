@@ -56,7 +56,7 @@ public class RestaurantSimulator extends GameApplication {
     @Override
     protected void initSettings(GameSettings settings) {
         settings.setWidth(1300);
-        settings.setHeight(600);
+        settings.setHeight(650);
         settings.setTitle("Simulador Restaurante");
         settings.setVersion("0.1");
         settings.setMainMenuEnabled(true);
