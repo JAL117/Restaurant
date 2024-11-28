@@ -1,3 +1,4 @@
+// Archivo: Customer.java
 package com.Simulador.Restaurante.entities;
 
 import com.almasb.fxgl.dsl.FXGL;

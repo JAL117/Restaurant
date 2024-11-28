@@ -32,24 +32,24 @@ public class RestaurantEntityFactory implements EntityFactory {
 
     public void spawnWaiters(int count) {
         for (int i = 0; i < count; i++) {
-            FXGL.spawn(EntityType.WAITER.name().toLowerCase(), 500 + i * 50, 300);
+            FXGL.spawn(EntityType.WAITER.name().toLowerCase(), 240 + i * 50, 100);
         }
     }
 
     public void spawnCooks(int count) {
         for (int i = 0; i < count; i++) {
-            FXGL.spawn(EntityType.COOK.name().toLowerCase(), 1220, 250 + i * 100);
+            FXGL.spawn(EntityType.COOK.name().toLowerCase(), 1220, 250 + i * 50);
         }
     }
 
     public void spawnCustomers(int count) {
         for (int i = 0; i < count; i++) {
-            FXGL.spawn(EntityType.CUSTOMER.name().toLowerCase(), 100, 200 + i *  50);
+            FXGL.spawn(EntityType.CUSTOMER.name().toLowerCase(), 60, 550 + i *  50);
         }
     }
 
     public void spawnReceptionist() {
-        FXGL.spawn(EntityType.RECEPTIONIST.name().toLowerCase(), 150, 200);
+        FXGL.spawn(EntityType.RECEPTIONIST.name().toLowerCase(), 90, 480);
     }
 
 

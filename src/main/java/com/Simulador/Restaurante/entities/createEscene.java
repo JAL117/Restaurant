@@ -34,7 +34,7 @@ public class createEscene {
                 .buildAndAttach();
 
         FXGL.entityBuilder()
-                .at(30, 150)
+                .at(10, 500)
                 .view(createImageView("/assets/textures/waiting_area.jpg", 100, 500))
                 .buildAndAttach();
 
