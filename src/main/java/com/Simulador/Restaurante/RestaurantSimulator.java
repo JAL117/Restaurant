@@ -1,4 +1,4 @@
-package com.Simulador.Restaurante;
+/*package com.Simulador.Restaurante;
 
 import com.Simulador.Restaurante.business.services.RestauranteService;
 import com.Simulador.Restaurante.presentation.views.RestauranteView;
@@ -36,9 +36,10 @@ public class RestaurantSimulator extends Application {
         launch(args);
     }
 }
+*/
+package com.Simulador.Restaurante;
 
-
-/*import com.Simulador.Restaurante.entities.EntityType;
+import com.Simulador.Restaurante.entities.EntityType;
 import com.Simulador.Restaurante.components.MainMenu;
 import com.Simulador.Restaurante.entities.RestaurantEntityFactory;
 import com.almasb.fxgl.app.GameApplication;
@@ -47,14 +48,9 @@ import com.almasb.fxgl.app.scene.FXGLMenu;
 import com.almasb.fxgl.app.scene.SceneFactory;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.Text;
-public class RestaurantSimulator extends GameApplication {
+import com.Simulador.Restaurante.entities.createEscene;
 
-    private List<Entity> tables = new ArrayList<>();
+public class RestaurantSimulator extends GameApplication {
 
     @Override
     protected void initSettings(GameSettings settings) {
@@ -77,62 +73,13 @@ public class RestaurantSimulator extends GameApplication {
 
     @Override
     protected void initGame() {
-        createGameEntities();
+        createEscene sceneCreator = new createEscene();
+        sceneCreator.createGameEntities();
         FXGL.getGameWorld().addEntityFactory(new RestaurantEntityFactory());
         spawnInitialEntities();
     }
 
-    private void createGameEntities() {
-        FXGL.entityBuilder()
-                .at(0, 0)
-                .view(createImageView("/assets/textures/background.png", 1300, 850))
-                .buildAndAttach();
 
-        FXGL.entityBuilder()
-                .at(210, 70)
-                .view(createImageView("/assets/textures/dining_area.jpg", 1200, 500))
-                .buildAndAttach();
-
-        FXGL.entityBuilder()
-                .at(1100, 120)
-                .view(createImageView("/assets/textures/kitchen.jpg", 500, 400))
-                .buildAndAttach();
-
-        FXGL.entityBuilder()
-                .at(30, 150)
-                .view(createImageView("/assets/textures/waiting_area.jpg", 100, 500))
-                .buildAndAttach();
-
-        addLabel("Cocina", 1150, 30);
-        addLabel("Área de espera", 30, 30);
-        addLabel("Área de mesas", 550, 30);
-
-        createTables(4, 5, 350, 110, 50);
-    }
-
-    private void createTables(int rows, int cols, double startX, double startY, double spacing) {
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
-                double posX = startX + j * (70 + spacing);
-                double posY = startY + i * (70 + spacing);
-                Entity table = FXGL.entityBuilder()
-                        .at(posX, posY)
-                        .view(createImageView("/assets/textures/table.jpg", 70, 70))
-                        .buildAndAttach();
-                tables.add(table);
-            }
-        }
-    }
-
-    private void addLabel(String text, double x, double y) {
-        Text label = new Text(text);
-        label.setFill(Color.WHITE);
-        label.setFont(Font.font(20));
-        FXGL.entityBuilder()
-                .at(x, y)
-                .view(label)
-                .buildAndAttach();
-    }
 
     private void spawnWaiters(int count) {
         for (int i = 0; i < count; i++) {
@@ -156,9 +103,7 @@ public class RestaurantSimulator extends GameApplication {
         FXGL.spawn(EntityType.RECEPTIONIST.name().toLowerCase(), 150, 200);
     }
 
-    private Image loadImage(String path) {
-        return new Image(Objects.requireNonNull(getClass().getResourceAsStream(path)));
-    }
+
 
     private void spawnInitialEntities() {
         spawnWaiters(3);
@@ -167,12 +112,12 @@ public class RestaurantSimulator extends GameApplication {
         spawnReceptionist();
     }
 
-    private ImageView createImageView(String path, double width, double height) {
-        ImageView imageView = new ImageView(loadImage(path));
-        imageView.setFitWidth(width);
-        imageView.setFitHeight(height);
-        imageView.setPreserveRatio(true);
-        imageView.setSmooth(true);
-        return imageView;
-    }
-}*/
+
+
+
+
+
+
+
+}
+
