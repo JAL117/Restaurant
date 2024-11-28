@@ -13,11 +13,4 @@ public class Cook extends Entity {
                 .type(EntityType.COOK)
                 .buildAndAttach();
     }
-
-    public void moverMesero(int meseroId, double x, double y) {
-        Entity mesero = FXGL.getGameWorld().getEntitiesByType(EntityType.WAITER).get(meseroId);
-        if (mesero != null) {
-            mesero.setPosition(x, y);
-        }
-    }
 }

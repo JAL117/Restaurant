@@ -37,9 +37,10 @@ public class RestaurantSimulator extends Application {
     }
 }
 */
-package com.Simulador.Restaurante;
 
-import com.Simulador.Restaurante.entities.EntityType;
+
+
+package com.Simulador.Restaurante;
 import com.Simulador.Restaurante.components.MainMenu;
 import com.Simulador.Restaurante.entities.RestaurantEntityFactory;
 import com.almasb.fxgl.app.GameApplication;
@@ -47,8 +48,8 @@ import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.app.scene.FXGLMenu;
 import com.almasb.fxgl.app.scene.SceneFactory;
 import com.almasb.fxgl.dsl.FXGL;
-import com.almasb.fxgl.entity.Entity;
 import com.Simulador.Restaurante.entities.createEscene;
+import com.almasb.fxgl.entity.EntityFactory;
 
 public class RestaurantSimulator extends GameApplication {
 
@@ -75,42 +76,24 @@ public class RestaurantSimulator extends GameApplication {
     protected void initGame() {
         createEscene sceneCreator = new createEscene();
         sceneCreator.createGameEntities();
-        FXGL.getGameWorld().addEntityFactory(new RestaurantEntityFactory());
-        spawnInitialEntities();
+
+
+        RestaurantEntityFactory entityFactory = new RestaurantEntityFactory();
+        FXGL.getGameWorld().addEntityFactory(entityFactory);
+
+
+
+        entityFactory.spawnInitialEntities();
+
+
     }
 
 
 
-    private void spawnWaiters(int count) {
-        for (int i = 0; i < count; i++) {
-            FXGL.spawn(EntityType.WAITER.name().toLowerCase(), 500 + i * 50, 300);
-        }
-    }
-
-    private void spawnCooks(int count) {
-        for (int i = 0; i < count; i++) {
-            FXGL.spawn(EntityType.COOK.name().toLowerCase(), 1220, 250 + i * 100);
-        }
-    }
-
-    private void spawnCustomers(int count) {
-        for (int i = 0; i < count; i++) {
-            FXGL.spawn(EntityType.CUSTOMER.name().toLowerCase(), 100, 200 + i *  50);
-        }
-    }
-
-    private void spawnReceptionist() {
-        FXGL.spawn(EntityType.RECEPTIONIST.name().toLowerCase(), 150, 200);
-    }
 
 
 
-    private void spawnInitialEntities() {
-        spawnWaiters(3);
-        spawnCooks(2);
-        spawnCustomers(2);
-        spawnReceptionist();
-    }
+
 
 
 

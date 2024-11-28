@@ -1,9 +1,11 @@
 package com.Simulador.Restaurante.entities;
 
+import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.EntityFactory;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.entity.Spawns;
+
 
 public class RestaurantEntityFactory implements EntityFactory {
     @Spawns("customer")
@@ -24,6 +26,39 @@ public class RestaurantEntityFactory implements EntityFactory {
     @Spawns("receptionist")
     public Entity newReceptionist(SpawnData data) {
         return new Receptionist(data);
+    }
+
+
+
+    public void spawnWaiters(int count) {
+        for (int i = 0; i < count; i++) {
+            FXGL.spawn(EntityType.WAITER.name().toLowerCase(), 500 + i * 50, 300);
+        }
+    }
+
+    public void spawnCooks(int count) {
+        for (int i = 0; i < count; i++) {
+            FXGL.spawn(EntityType.COOK.name().toLowerCase(), 1220, 250 + i * 100);
+        }
+    }
+
+    public void spawnCustomers(int count) {
+        for (int i = 0; i < count; i++) {
+            FXGL.spawn(EntityType.CUSTOMER.name().toLowerCase(), 100, 200 + i *  50);
+        }
+    }
+
+    public void spawnReceptionist() {
+        FXGL.spawn(EntityType.RECEPTIONIST.name().toLowerCase(), 150, 200);
+    }
+
+
+
+    public void spawnInitialEntities() {
+        spawnWaiters(2);
+        spawnCooks(3);
+        spawnCustomers(10);
+        spawnReceptionist();
     }
 }
 
