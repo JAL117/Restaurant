@@ -46,16 +46,15 @@ import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.app.scene.FXGLMenu;
 import com.almasb.fxgl.app.scene.SceneFactory;
 import com.almasb.fxgl.dsl.FXGL;
+import com.almasb.fxgl.entity.Entity;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-//Test
-import java.util.Objects;
-
 public class RestaurantSimulator extends GameApplication {
 
+    private List<Entity> tables = new ArrayList<>();
 
     @Override
     protected void initSettings(GameSettings settings) {
@@ -76,16 +75,12 @@ public class RestaurantSimulator extends GameApplication {
         launch(args);
     }
 
-
-
     @Override
     protected void initGame() {
         createGameEntities();
         FXGL.getGameWorld().addEntityFactory(new RestaurantEntityFactory());
         spawnInitialEntities();
     }
-
-
 
     private void createGameEntities() {
         FXGL.entityBuilder()
@@ -105,23 +100,26 @@ public class RestaurantSimulator extends GameApplication {
 
         FXGL.entityBuilder()
                 .at(30, 150)
-                .view(createImageView("/assets/textures/waiting_area.jpg", 100, 500 ))
+                .view(createImageView("/assets/textures/waiting_area.jpg", 100, 500))
                 .buildAndAttach();
 
         addLabel("Cocina", 1150, 30);
         addLabel("Área de espera", 30, 30);
         addLabel("Área de mesas", 550, 30);
 
-        createTables();
+        createTables(4, 5, 350, 110, 50);
     }
 
-    private void createTables() {
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 5; j++) {
-                FXGL.entityBuilder()
-                        .at(300 + j * 150, 110 + i * 120)
+    private void createTables(int rows, int cols, double startX, double startY, double spacing) {
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                double posX = startX + j * (70 + spacing);
+                double posY = startY + i * (70 + spacing);
+                Entity table = FXGL.entityBuilder()
+                        .at(posX, posY)
                         .view(createImageView("/assets/textures/table.jpg", 70, 70))
                         .buildAndAttach();
+                tables.add(table);
             }
         }
     }
@@ -150,12 +148,11 @@ public class RestaurantSimulator extends GameApplication {
 
     private void spawnCustomers(int count) {
         for (int i = 0; i < count; i++) {
-            FXGL.spawn(EntityType.CUSTOMER.name().toLowerCase(), 100, 200 + i * 50);
+            FXGL.spawn(EntityType.CUSTOMER.name().toLowerCase(), 100, 200 + i *  50);
         }
     }
 
     private void spawnReceptionist() {
-
         FXGL.spawn(EntityType.RECEPTIONIST.name().toLowerCase(), 150, 200);
     }
 
@@ -170,7 +167,7 @@ public class RestaurantSimulator extends GameApplication {
         spawnReceptionist();
     }
 
-   private ImageView createImageView(String path, double width, double height) {
+    private ImageView createImageView(String path, double width, double height) {
         ImageView imageView = new ImageView(loadImage(path));
         imageView.setFitWidth(width);
         imageView.setFitHeight(height);
