@@ -39,4 +39,6 @@ public class Mesa {
     public double getPosY() {
         return posY;
     }
+
+
 }
