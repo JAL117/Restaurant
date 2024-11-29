@@ -7,10 +7,8 @@ import com.almasb.fxgl.app.scene.FXGLScene;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 
-import com.almasb.fxgl.entity.components.TransformComponent;
 import javafx.application.Platform;
 import javafx.geometry.Point2D;
-import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -69,23 +67,8 @@ public class RestauranteView extends FXGLScene {
     }
 
     private void inicializarAreas() {
-        // Zona de entrada
-        Rectangle entranceArea = new Rectangle(150, 150, Color.LIGHTBLUE);
-        entranceArea.setTranslateX(entrance.getX() - 75);
-        entranceArea.setTranslateY(entrance.getY() - 75);
-        Text entranceLabel = new Text("Entrada");
-        entranceLabel.setTranslateX(entrance.getX() - 25);
-        entranceLabel.setTranslateY(entrance.getY() - 100);
 
-        // Zona de recepción
-        Rectangle receptionArea = new Rectangle(150, 150, Color.BEIGE);
-        receptionArea.setTranslateX(reception.getX() - 75);
-        receptionArea.setTranslateY(reception.getY() - 75);
-        Text receptionLabel = new Text("Recepción");
-        receptionLabel.setTranslateX(reception.getX() - 25);
-        receptionLabel.setTranslateY(reception.getY() - 100);
 
-        // Zona de cocina
         Rectangle kitchenArea = new Rectangle(150, 150, Color.LIGHTGRAY);
         kitchenArea.setTranslateX(kitchen.getX() - 75);
         kitchenArea.setTranslateY(kitchen.getY() - 75);
@@ -93,18 +76,13 @@ public class RestauranteView extends FXGLScene {
         kitchenLabel.setTranslateX(kitchen.getX() - 25);
         kitchenLabel.setTranslateY(kitchen.getY() - 100);
 
-        // Agregar a la escena
-        FXGL.addUINode(entranceArea);
-        FXGL.addUINode(entranceLabel);
-        FXGL.addUINode(receptionArea);
-        FXGL.addUINode(receptionLabel);
-        FXGL.addUINode(kitchenArea);
+     /*   FXGL.addUINode(kitchenArea);*/
         FXGL.addUINode(kitchenLabel);
     }
 
     private void inicializarMesas() {
-        int columnas = 8;
-        double startX = 200;
+        int columnas = 5;
+        double startX = 300;
         double startY = 200;
         double offsetX = 70;
         double offsetY = 80;
@@ -247,44 +225,15 @@ public class RestauranteView extends FXGLScene {
             });
 
             // Reproducimos la animación
-            double v = 3;
-            animation.onUpdate(v);
+            animation.start();
         }
     }
 
-    public void actualizarComidaLista(int ordenId) {
-      Platform.runLater(() -> {
-            Entity ordenVisual = getOrdenVisual(ordenId);
-            if (ordenVisual != null) {
-                ordenVisual.getViewComponent().clearChildren();
-                Rectangle rect = new Rectangle(40, 20, Color.ORANGE); // Visualización de comida lista
-                ordenVisual.getViewComponent().addChild(rect);
-                Text label = new Text("Lista");
-                label.setFill(Color.WHITE);
-                ordenVisual.getViewComponent().addChild(label);
-            }
-        });
-    }
 
-    public void actualizarComidaServida(int ordenId) {
-        Platform.runLater(() -> {
-            Entity ordenVisual = getOrdenVisual(ordenId);
-            if (ordenVisual != null) {
-                ordenVisual.getViewComponent().clearChildren();
-                Rectangle rect = new Rectangle(40, 20, Color.GREEN); // Visualización de comida servida
-                ordenVisual.getViewComponent().addChild(rect);
-                Text label = new Text("Servida");
-                label.setFill(Color.WHITE);
-                ordenVisual.getViewComponent().addChild(label);
-            }
-        });
-    }
 
-    private Entity getOrdenVisual(int ordenId) {
-        // Obtiene la entidad visual de la orden. Puedes personalizar cómo se gestiona.
-        // Aquí asumimos que las órdenes están mapeadas en un mapa similar al ejemplo anterior.
-        return cocinerosVisuales.get(ordenId); // Modificar según estructura real
-    }
+
+
+
 
     public double getReceptionX() {
         return reception.getX();

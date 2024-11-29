@@ -16,7 +16,6 @@ public class MeseroThread extends Thread {
     private final ComidaMonitor comidaMonitor;
     private final ComensalMonitor comensalMonitor;
     private final RestauranteView view;
-    private final RestauranteService service;
 
     public MeseroThread(Mesero mesero, OrdenMonitor ordenMonitor, ComidaMonitor comidaMonitor, ComensalMonitor comensalMonitor, RestauranteView view, RestauranteService service) {
         this.mesero = mesero;
@@ -24,7 +23,6 @@ public class MeseroThread extends Thread {
         this.comidaMonitor = comidaMonitor;
         this.comensalMonitor = comensalMonitor;
         this.view = view;
-        this.service = service;
     }
 
     @Override
@@ -42,13 +40,13 @@ public class MeseroThread extends Thread {
                 Orden orden = new Orden(comensal.getId(), comensal.getId());
                 ordenMonitor.agregarOrden(orden);
                 System.out.println("Orden " + orden.getId() + " añadida al buffer de órdenes.");
-                view.actualizarComidaLista(orden.getId());
+
 
                 Orden comidaLista = comidaMonitor.obtenerComida(orden.getId());
                 System.out.println("Comida " + comidaLista.getId() + " retirada del buffer de comidas.");
 
                 System.out.println("Mesero " + mesero.getId() + " está sirviendo la Orden " + comidaLista.getId());
-                view.actualizarComidaServida(comidaLista.getId());
+
                 view.entregarOrden(mesero.getId(), mesa.getNumero());
 
                 synchronized (comensal) {

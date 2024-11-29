@@ -66,9 +66,9 @@ public class RestaurantSimulator extends GameApplication {
     @Override
     protected void initGame() {
         // Crear instancia de RestauranteService
-        int capacidadMesas = 40; // Ajusta según necesidad
-        int cantidadMeseros = 4; // Ajusta según necesidad
-        int cantidadCocineros = 10; // Ajusta según necesidad
+        int capacidadMesas = 20; // Ajusta según necesidad
+        int cantidadMeseros = 2; // Ajusta según necesidad
+        int cantidadCocineros = 3; // Ajusta según necesidad
 
         restauranteService = new RestauranteService(capacidadMesas, cantidadMeseros, cantidadCocineros);
         restauranteView = restauranteService.getView();
