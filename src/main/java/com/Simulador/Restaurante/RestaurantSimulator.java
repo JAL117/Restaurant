@@ -40,18 +40,31 @@ public class RestaurantSimulator extends Application {
 
 
 
+
+
+
 package com.Simulador.Restaurante;
+
 import com.Simulador.Restaurante.components.MainMenu;
+import com.Simulador.Restaurante.concurrency.monitors.ComensalMonitor;
+import com.Simulador.Restaurante.concurrency.monitors.ComidaMonitor;
+import com.Simulador.Restaurante.concurrency.monitors.MesaMonitor;
+import com.Simulador.Restaurante.concurrency.monitors.OrdenMonitor;
 import com.Simulador.Restaurante.entities.RestaurantEntityFactory;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.app.scene.FXGLMenu;
+import com.almasb.fxgl.app.scene.SceneFactory;
 import com.almasb.fxgl.app.scene.SceneFactory;
 import com.almasb.fxgl.dsl.FXGL;
 import com.Simulador.Restaurante.entities.createEscene;
 import com.almasb.fxgl.entity.EntityFactory;
 
 public class RestaurantSimulator extends GameApplication {
+    private MesaMonitor mesaMonitor;
+    private ComensalMonitor comensalMonitor;
+    private ComidaMonitor comidaMonitor;
+    private OrdenMonitor ordenMonitor;
 
     @Override
     protected void initSettings(GameSettings settings) {
@@ -77,30 +90,27 @@ public class RestaurantSimulator extends GameApplication {
         createEscene sceneCreator = new createEscene();
         sceneCreator.createGameEntities();
 
+        // Inicializa los monitores
+        mesaMonitor = new MesaMonitor(20);
+        comensalMonitor = new ComensalMonitor();
+        comidaMonitor = new ComidaMonitor();
+        ordenMonitor = new OrdenMonitor();
 
+        // Agrega el factory de entidades al juego
         RestaurantEntityFactory entityFactory = new RestaurantEntityFactory();
         FXGL.getGameWorld().addEntityFactory(entityFactory);
 
-
-
+        // Llama a la función para crear las entidades iniciales
         entityFactory.spawnInitialEntities();
-
-
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
+
+
+
+
+
+
+
+
+
 

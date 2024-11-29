@@ -33,6 +33,7 @@ public class ComensalThread extends Thread {
             Thread.sleep(500);
 
             view.moverComensalARecepcion(comensal.getId());
+
             System.out.println("Recepcionista está registrando al Comensal " + comensal.getId());
 
             Mesa mesa = mesaMonitor.asignarMesa(comensal);
