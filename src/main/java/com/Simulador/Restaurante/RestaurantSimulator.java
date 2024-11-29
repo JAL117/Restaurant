@@ -58,8 +58,8 @@ public class RestaurantSimulator extends GameApplication {
     protected void initSettings(GameSettings settings) {
         settings.setTitle("Simulador de Restaurante");
         settings.setVersion("1.0");
-        settings.setWidth(1000);
-        settings.setHeight(600);
+        settings.setWidth(1400);
+        settings.setHeight(700);
         settings.setMainMenuEnabled(false);
     }
 
@@ -68,7 +68,7 @@ public class RestaurantSimulator extends GameApplication {
         // Crear instancia de RestauranteService
         int capacidadMesas = 40; // Ajusta según necesidad
         int cantidadMeseros = 4; // Ajusta según necesidad
-        int cantidadCocineros = 6; // Ajusta según necesidad
+        int cantidadCocineros = 10; // Ajusta según necesidad
 
         restauranteService = new RestauranteService(capacidadMesas, cantidadMeseros, cantidadCocineros);
         restauranteView = restauranteService.getView();

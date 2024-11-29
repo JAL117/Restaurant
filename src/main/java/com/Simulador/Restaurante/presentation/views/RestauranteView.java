@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
-import static com.sun.javafx.application.PlatformImpl.runLater;
+
 
 public class RestauranteView extends FXGLScene {
 
@@ -253,7 +253,7 @@ public class RestauranteView extends FXGLScene {
     }
 
     public void actualizarComidaLista(int ordenId) {
-        runLater(() -> {
+      Platform.runLater(() -> {
             Entity ordenVisual = getOrdenVisual(ordenId);
             if (ordenVisual != null) {
                 ordenVisual.getViewComponent().clearChildren();
@@ -267,7 +267,7 @@ public class RestauranteView extends FXGLScene {
     }
 
     public void actualizarComidaServida(int ordenId) {
-        runLater(() -> {
+        Platform.runLater(() -> {
             Entity ordenVisual = getOrdenVisual(ordenId);
             if (ordenVisual != null) {
                 ordenVisual.getViewComponent().clearChildren();
