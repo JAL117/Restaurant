@@ -122,4 +122,6 @@ public class RestauranteService {
     public RestauranteView getView() {
         return view;
     }
+
+
 }

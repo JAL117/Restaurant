@@ -76,16 +76,16 @@ public class RestauranteView extends FXGLScene {
         kitchenLabel.setTranslateX(kitchen.getX() - 25);
         kitchenLabel.setTranslateY(kitchen.getY() - 100);
 
-     /*   FXGL.addUINode(kitchenArea);*/
+        /*   FXGL.addUINode(kitchenArea);*/
         FXGL.addUINode(kitchenLabel);
     }
 
     private void inicializarMesas() {
-        int columnas = 5;
+        int columnas = 8;
         double startX = 300;
         double startY = 200;
-        double offsetX = 70;
-        double offsetY = 80;
+        double offsetX = 100;
+        double offsetY = 100;
 
         for (Mesa mesa : mesas) {
             int numeroMesa = mesa.getNumero();
@@ -129,17 +129,24 @@ public class RestauranteView extends FXGLScene {
     }
 
     public void actualizarEstadoMesa(int numeroMesa, EstadoMesa estado) {
-        // Asegurarse de que las modificaciones de la GUI se ejecuten en el hilo de JavaFX
         Platform.runLater(() -> {
+            // Obtener la entidad de la mesa
             Entity mesaEntity = mesasVisuales.get(numeroMesa);
+
+            // Verificar que la entidad de la mesa existe
             if (mesaEntity != null) {
+                // Definir el color de la mesa dependiendo de su estado
                 Color color = (estado == EstadoMesa.LIBRE) ? Color.GREEN : Color.RED;
-                mesaEntity.getViewComponent().clearChildren(); // Limpia los nodos hijos
-                mesaEntity.getViewComponent().addChild(new Rectangle(40, 40, color)); // Agrega un nuevo nodo
+
+                // Limpiar los nodos hijos de la mesa (por ejemplo, las visualizaciones anteriores)
+                mesaEntity.getViewComponent().clearChildren();
+
+                // Agregar un rectángulo con el color apropiado
+                mesaEntity.getViewComponent().addChild(new Rectangle(40, 40, color));
+
             }
         });
     }
-
 
     public void actualizarTotalComensales(int total) {
         totalComensalesText.setText("Total Comensales: " + total);
@@ -172,7 +179,6 @@ public class RestauranteView extends FXGLScene {
         }
     }
 
-
     public void añadirCocinero(int cocineroId) {
         runOnce(() -> {
             Entity cocinero = entityBuilder()
@@ -188,11 +194,19 @@ public class RestauranteView extends FXGLScene {
         Entity comensal = comensalesVisuales.get(comensalId);
         Entity mesa = mesasVisuales.get(numeroMesa);
         if (comensal != null && mesa != null) {
-            Point2D target = mesa.getPosition().subtract(0, 15); // Ajustar posición sobre la mesa
+            Point2D target = mesa.getPosition().subtract(21, -10);
+            Point2D firstImpact = new Point2D(180,450);
             animationBuilder()
-                    .duration(Duration.seconds(2))
+                    .onFinished(() -> {
+                        animationBuilder()
+                                .duration(Duration.seconds(1))
+                                .translate(comensal)
+                                .to(target)
+                                .buildAndPlay();
+                    })
+                    .duration(Duration.seconds(1))
                     .translate(comensal)
-                    .to(target)
+                    .to(firstImpact)
                     .buildAndPlay();
         }
     }
@@ -208,33 +222,6 @@ public class RestauranteView extends FXGLScene {
         }
     }
 
-    public void moverComensalFuera(int comensalId) {
-        Entity comensal = comensalesVisuales.get(comensalId);
-        if (comensal != null) {
-            Point2D exitPoint = entrance.subtract(100, 0);
-            var animation = animationBuilder()
-                    .duration(Duration.seconds(2))
-                    .translate(comensal)
-                    .to(exitPoint)
-                    .build(); // Construimos la animación sin reproducir aún
-
-            // Configuramos lo que ocurre cuando la animación finaliza
-            animation.setOnFinished(() -> {
-                getGameWorld().removeEntity(comensal); // Eliminar de la escena
-                comensalesVisuales.remove(comensalId);
-            });
-
-            // Reproducimos la animación
-            animation.start();
-        }
-    }
-
-
-
-
-
-
-
     public double getReceptionX() {
         return reception.getX();
     }
@@ -242,18 +229,19 @@ public class RestauranteView extends FXGLScene {
     public double getReceptionY() {
         return reception.getY();
     }
+
     public void moverComensalAEntrada(int comensalId) {
         runOnce(() -> {
             // Verificar si el comensal ya existe
             Entity comensal = comensalesVisuales.get(comensalId);
             if (comensal == null) {
-                // Crear un nuevo comensal si no existe
+
                 comensal = FXGL.entityBuilder()
-                        .at(entrance.add(-50, 0)) // Posicionar cerca de la entrada
+                        .at(entrance.add(-50, 10))
                         .view(new Rectangle(20, 20, Color.BLUE))
                         .buildAndAttach();
 
-                // Registrar el comensal en el mapa
+
                 comensalesVisuales.put(comensalId, comensal);
             }
 
@@ -298,7 +286,6 @@ public class RestauranteView extends FXGLScene {
         }, Duration.ZERO);
     }
 
-
     public void moverComensal(int comensalId, double x, double y, Runnable onFinish) {
         Entity comensal = comensalesVisuales.get(comensalId);
         if (comensal != null) {
@@ -321,6 +308,13 @@ public class RestauranteView extends FXGLScene {
         // Mover el comensal asignado hacia la mesa
         moverComensal(comensalId, posicionMesa.getX(), posicionMesa.getY(), () -> {
             System.out.println("Comensal " + comensalId + " llegó a la mesa " + numeroMesa);
+
+            // Iniciar el temporizador de comida (por ejemplo, 5-10 segundos)
+            double tiempoDeComida = 5 + Math.random() * 5; // Aleatorio entre 5 y 10 segundos
+            FXGL.runOnce(() -> {
+                System.out.println("Comensal " + comensalId + " terminó de comer.");
+                retirarComensal(comensalId); // Retirar comensal después de comer
+            }, Duration.seconds(tiempoDeComida)); // Temporizador para que se retire
         });
     }
 
@@ -370,15 +364,23 @@ public class RestauranteView extends FXGLScene {
     public void retirarComensal(int comensalId) {
         Entity comensal = comensalesVisuales.get(comensalId);
         if (comensal != null) {
-            // Mover al comensal fuera de la pantalla
-            moverComensal(comensalId, 1100, 50, () -> {
+            // Realizar animación hacia fuera de la pantalla (fuera de la vista)
+            animationBuilder()
+                    .duration(Duration.seconds(1)) // Duración de la animación
+                    .interpolator(Interpolators.LINEAR.EASE_IN()) // Tipo de interpolación
+                    .translate(comensal)
+                    .to(new Point2D(1100, 50)) // Coordenadas fuera de la pantalla (ajusta según sea necesario)
+                    .buildAndPlay();
+
+            // Después de la animación, eliminar el comensal de la pantalla
+            runOnce(() -> {
                 System.out.println("Comensal " + comensalId + " se retiró.");
                 FXGL.getGameWorld().removeEntity(comensal); // Eliminar el comensal visual
                 comensalesVisuales.remove(comensalId);
-            });
+                return null;
+            }, Duration.seconds(1)); // Asegura que se elimine después de la animación
         }
     }
-
 
 
 

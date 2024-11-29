@@ -29,11 +29,14 @@ public class MeseroThread extends Thread {
     public void run() {
         try {
             while (true) {
+
                 Comensal comensal = comensalMonitor.retirarComensal();
+                Mesa mesa = comensal.getMesaAsignada();
                 System.out.println("Comensal " + comensal.getId() + " retirado de la cola de espera.");
+                view.atenderMesa(comensal.getId(), mesa.getNumero());
                 System.out.println("Mesero " + mesero.getId() + " está atendiendo al Comensal " + comensal.getId());
 
-                Mesa mesa = comensal.getMesaAsignada();
+
                 view.moverMesero(mesero.getId(), mesa.getPosX() + 20, mesa.getPosY());
 
                 Thread.sleep(1000);
