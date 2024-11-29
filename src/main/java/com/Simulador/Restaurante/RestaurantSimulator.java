@@ -35,14 +35,57 @@ public class RestaurantSimulator extends Application {
     public static void main(String[] args) {
         launch(args);
     }
+}*/
+
+package com.Simulador.Restaurante;
+
+import com.Simulador.Restaurante.business.services.RestauranteService;
+import com.Simulador.Restaurante.presentation.views.RestauranteView;
+import com.almasb.fxgl.app.GameApplication;
+import com.almasb.fxgl.app.GameSettings;
+import javafx.scene.Scene;
+
+import static com.almasb.fxgl.dsl.FXGLForKtKt.getGameScene;
+
+public class RestaurantSimulator extends GameApplication {
+
+    private RestauranteService restauranteService;
+    private RestauranteView restauranteView;
+
+    @Override
+    protected void initSettings(GameSettings settings) {
+        settings.setTitle("Simulador de Restaurante");
+        settings.setVersion("1.0");
+        settings.setWidth(1000);
+        settings.setHeight(600);
+        settings.setMainMenuEnabled(false);
+    }
+
+    @Override
+    protected void initGame() {
+        // Crear instancia de RestauranteService
+        int capacidadMesas = 40; // Ajusta según necesidad
+        int cantidadMeseros = 4; // Ajusta según necesidad
+        int cantidadCocineros = 6; // Ajusta según necesidad
+
+        restauranteService = new RestauranteService(capacidadMesas, cantidadMeseros, cantidadCocineros);
+        restauranteView = restauranteService.getView();
+
+        // Agregar la vista principal al juego
+        getGameScene().addUINode(restauranteView.getRoot());
+        restauranteService.iniciarSimulacion();
+    }
+
+    public static void main(String[] args) {
+        launch(args);
+    }
 }
-*/
 
 
 
 
 
-
+/*
 package com.Simulador.Restaurante;
 
 import com.Simulador.Restaurante.components.MainMenu;
@@ -105,7 +148,7 @@ public class RestaurantSimulator extends GameApplication {
     }
 }
 
-
+*/
 
 
 
