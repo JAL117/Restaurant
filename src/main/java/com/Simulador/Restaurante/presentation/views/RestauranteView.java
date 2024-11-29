@@ -8,6 +8,7 @@ import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 
 import com.almasb.fxgl.entity.components.TransformComponent;
+import javafx.application.Platform;
 import javafx.geometry.Point2D;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
@@ -150,13 +151,17 @@ public class RestauranteView extends FXGLScene {
     }
 
     public void actualizarEstadoMesa(int numeroMesa, EstadoMesa estado) {
-        Entity mesaEntity = mesasVisuales.get(numeroMesa);
-        if (mesaEntity != null) {
-            Color color = estado == EstadoMesa.LIBRE ? Color.GREEN : Color.RED;
-            mesaEntity.getViewComponent().clearChildren();
-            mesaEntity.getViewComponent().addChild(new Rectangle(40, 40, color));
-        }
+        // Asegurarse de que las modificaciones de la GUI se ejecuten en el hilo de JavaFX
+        Platform.runLater(() -> {
+            Entity mesaEntity = mesasVisuales.get(numeroMesa);
+            if (mesaEntity != null) {
+                Color color = (estado == EstadoMesa.LIBRE) ? Color.GREEN : Color.RED;
+                mesaEntity.getViewComponent().clearChildren(); // Limpia los nodos hijos
+                mesaEntity.getViewComponent().addChild(new Rectangle(40, 40, color)); // Agrega un nuevo nodo
+            }
+        });
     }
+
 
     public void actualizarTotalComensales(int total) {
         totalComensalesText.setText("Total Comensales: " + total);
@@ -169,12 +174,12 @@ public class RestauranteView extends FXGLScene {
     public void añadirMesero(int meseroId) {
         runOnce(() -> {
             Entity mesero = entityBuilder()
-                    .at(reception.add(20 * meseroId, 0)) // Posicionar meseros en fila en la recepción
+                    .at(reception.add(20 * meseroId, 0))
                     .view(new Rectangle(10, 10, Color.GREEN))
                     .buildAndAttach();
             meserosVisuales.put(meseroId, mesero);
             return null;
-        }, Duration.seconds(0)); // Ejecutar inmediatamente
+        }, Duration.seconds(0));
     }
 
     public void moverMesero(int meseroId, double x, double y) {
@@ -315,19 +320,35 @@ public class RestauranteView extends FXGLScene {
     }
 
     public void añadirComensal(int comensalId) {
-        // Crear el comensal visualmente en la entrada
-        Entity comensal = entityBuilder()
-                .at(entrance)
-                .view(new Rectangle(20, 20, Color.BLUE))
-                .buildAndAttach();
-        comensalesVisuales.put(comensalId, comensal);
+        runOnce(() -> {
+            Entity comensal = entityBuilder()
+                    .at(entrance.add(-50, 0)) // Comenzar fuera de la pantalla
+                    .view(new Rectangle(20, 20, Color.BLUE))
+                    .buildAndAttach();
 
-        // Mover el comensal hacia la recepción
-        moverComensal(comensalId, reception.getX(), reception.getY(), () -> {
-            System.out.println("Comensal " + comensalId + " llegó a recepción.");
-            // Aquí se podría llamar a la lógica para verificar mesas y asignar una
-        });
+            comensalesVisuales.put(comensalId, comensal);
+
+            // Animar la entrada
+            var entradaAnimation = animationBuilder()
+                    .duration(Duration.seconds(1))
+                    .interpolator(Interpolators.SMOOTH.EASE_IN())
+                    .translate(comensal)
+                    .to(entrance)
+                    .build();
+
+            entradaAnimation.setOnFinished(() -> {
+                // Mover a recepción después de entrar
+                moverComensal(comensalId, reception.getX(), reception.getY(), () -> {
+                    System.out.println("Comensal " + comensalId + " llegó a recepción");
+                });
+            });
+
+            entradaAnimation.start();
+
+            return null;
+        }, Duration.ZERO);
     }
+
 
     public void moverComensal(int comensalId, double x, double y, Runnable onFinish) {
         Entity comensal = comensalesVisuales.get(comensalId);
@@ -371,7 +392,6 @@ public class RestauranteView extends FXGLScene {
         Entity mesero = meserosVisuales.get(meseroId);
         if (mesero != null) {
             FXGL.animationBuilder()
-                    .duration(Duration.seconds(2))
                     .interpolator(Interpolators.LINEAR.EASE_IN_OUT())
                     .translate(mesero)
                     .from(mesero.getPosition()) // Posición actual del mesero

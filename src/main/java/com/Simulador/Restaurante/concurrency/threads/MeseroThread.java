@@ -36,7 +36,7 @@ public class MeseroThread extends Thread {
                 System.out.println("Mesero " + mesero.getId() + " está atendiendo al Comensal " + comensal.getId());
 
                 Mesa mesa = comensal.getMesaAsignada();
-                view.moverMesero(mesero.getId(), mesa.getPosX() + 30, mesa.getPosY());
+                view.moverMesero(mesero.getId(), mesa.getPosX() + 20, mesa.getPosY());
 
                 Thread.sleep(1000);
                 Orden orden = new Orden(comensal.getId(), comensal.getId());
@@ -49,6 +49,7 @@ public class MeseroThread extends Thread {
 
                 System.out.println("Mesero " + mesero.getId() + " está sirviendo la Orden " + comidaLista.getId());
                 view.actualizarComidaServida(comidaLista.getId());
+                view.entregarOrden(mesero.getId(), mesa.getNumero());
 
                 synchronized (comensal) {
                     comensal.notify();

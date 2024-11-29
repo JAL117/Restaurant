@@ -40,10 +40,12 @@ public class RestaurantSimulator extends Application {
 package com.Simulador.Restaurante;
 
 import com.Simulador.Restaurante.business.services.RestauranteService;
+import com.Simulador.Restaurante.business.utils.PoissonDistribution;
 import com.Simulador.Restaurante.presentation.views.RestauranteView;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import javafx.scene.Scene;
+import com.Simulador.Restaurante.business.utils.RandomUtils;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.getGameScene;
 
@@ -70,10 +72,11 @@ public class RestaurantSimulator extends GameApplication {
 
         restauranteService = new RestauranteService(capacidadMesas, cantidadMeseros, cantidadCocineros);
         restauranteView = restauranteService.getView();
-
+         restauranteView.añadirComensal(RandomUtils.generarTiempoAleatorio(1 , 2));
+        restauranteService.iniciarSimulacion();
         // Agregar la vista principal al juego
         getGameScene().addUINode(restauranteView.getRoot());
-        restauranteService.iniciarSimulacion();
+
     }
 
     public static void main(String[] args) {

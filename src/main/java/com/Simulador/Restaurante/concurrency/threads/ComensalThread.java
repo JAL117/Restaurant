@@ -38,11 +38,13 @@ public class ComensalThread extends Thread {
 
             Mesa mesa = mesaMonitor.asignarMesa(comensal);
             recepcionista.asignarMesa(comensal, mesa);
+
+            view.moverComensalAMesa(comensal.getId() , mesa.getNumero());
+
             System.out.println("Recepcionista ha asignado la Mesa " + mesa.getNumero());
 
             view.actualizarEstadoMesa(mesa.getNumero(), mesa.getEstado());
 
-            view.moverComensalAMesa(comensal.getId(), mesa.getNumero());
 
             comensalMonitor.agregarComensal(comensal);
             System.out.println("Comensal " + comensal.getId() + " añadido a la cola de espera.");
