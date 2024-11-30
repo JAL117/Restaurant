@@ -160,7 +160,7 @@ public class RestauranteView extends FXGLScene {
         runOnce(() -> {
             Entity cocinero = entityBuilder()
                     .at(kitchen.add(30 * (cocineroId - 1), 0)) // Posicionar cocineros en fila en la cocina
-                    .view(new Rectangle(10, 10, Color.RED))
+                    .view(new Rectangle(20, 20, Color.RED))
                     .buildAndAttach();
             cocinerosVisuales.put(cocineroId, cocinero);
             return null;
@@ -172,7 +172,7 @@ public class RestauranteView extends FXGLScene {
         runOnce(() -> {
             Entity mesero = entityBuilder()
                     .at(reception.add(20 * meseroId, 0))
-                    .view(new Rectangle(10, 10, Color.GREEN))
+                    .view(new Rectangle(20, 20, Color.YELLOW))
                     .buildAndAttach();
             meserosVisuales.put(meseroId, mesero);
             return null;
@@ -183,7 +183,7 @@ public class RestauranteView extends FXGLScene {
         Entity mesero = meserosVisuales.get(meseroId);
         if (mesero != null) {
             animationBuilder()
-                    .duration(Duration.seconds(2))
+                    .duration(Duration.seconds(1))
                     .interpolator(Interpolators.LINEAR.EASE_IN_OUT())
                     .translate(mesero)
                     .to(new Point2D(x, y))
@@ -212,7 +212,7 @@ public class RestauranteView extends FXGLScene {
         if (mesero != null) {
             moverMesero(meseroId, posicionMesa.getX(), posicionMesa.getY(), () -> {
                 System.out.println("Mesero " + meseroId + " atendió la mesa " + numeroMesa);
-                // Llamar a la lógica de creación de una orden
+
             });
         }
     }

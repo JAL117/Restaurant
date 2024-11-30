@@ -35,7 +35,7 @@ public class MeseroThread extends Thread {
 
                 // 2. Animación de atender al comensal
                 view.atenderMesa(comensal.getId(), mesa.getNumero());
-                view.moverMesero(mesero.getId(), mesa.getPosX() + 20, mesa.getPosY());
+                view.moverMesero(mesero.getId(), mesa.getPosX() + 10, mesa.getPosY()-30);
                 System.out.println("Mesero " + mesero.getId() + " está atendiendo al Comensal " + comensal.getId());
 
                 Thread.sleep(1000); // Simular el tiempo de atención
@@ -50,11 +50,13 @@ public class MeseroThread extends Thread {
                 System.out.println("Comida " + comidaLista.getId() + " retirada del buffer de comidas.");
 
                 // 5. Animación de entregar la comida
-                view.entregarOrden(mesero.getId(),mesa.getNumero());
+
                 System.out.println("Mesero " + mesero.getId() + " está sirviendo la Orden " + comidaLista.getId());
 
-                Thread.sleep(5000); // Simular el tiempo de entrega
+                Thread.sleep(2000); // Simular el tiempo de entrega
+                view.entregarOrden(mesero.getId(),mesa.getNumero());
 
+                
                 // 6. Notificar al comensal para que pueda comer
                 synchronized (comensal) {
                     comensal.notify();
