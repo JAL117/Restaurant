@@ -30,9 +30,9 @@ public class ComensalThread extends Thread {
     @Override
     public void run() {
         try {
-            // 1. Animaciones iniciales: entrada y asignación de mesa
+
             view.moverComensalAEntrada(comensal.getId());
-            Thread.sleep(2000); // Simulación breve
+            Thread.sleep(2000);
 
             view.moverComensalARecepcion(comensal.getId());
             System.out.println("Recepcionista está registrando al Comensal " + comensal.getId());
@@ -46,10 +46,10 @@ public class ComensalThread extends Thread {
 
             view.actualizarEstadoMesa(mesa.getNumero(), mesa.getEstado());
 
-            // 2. Agregar comensal a la cola de espera
+
             comensalMonitor.agregarComensal(comensal);
 
-            // 3. Esperar a que el mesero entregue la comida
+
             synchronized (comensal) {
                 comensal.wait();
             }
@@ -57,11 +57,11 @@ public class ComensalThread extends Thread {
 
             Random random = new Random();
             int tiempoDeComida = 500 + random.nextInt(2000);
-            // 4. Simular el tiempo de comida
+
             System.out.println("Comensal " + comensal.getId() + " está comiendo.");
             Thread.sleep(tiempoDeComida); // Tiempo de comer
 
-            // 5. Animaciones de salida
+
             System.out.println("Comensal " + comensal.getId() + " ha terminado de comer y se va.");
             mesaMonitor.liberarMesa(mesa);
             view.actualizarEstadoMesa(mesa.getNumero(), mesa.getEstado());
