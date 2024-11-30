@@ -9,6 +9,8 @@ import com.almasb.fxgl.entity.Entity;
 
 import javafx.application.Platform;
 import javafx.geometry.Point2D;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -67,17 +69,51 @@ public class RestauranteView extends FXGLScene {
     }
 
     private void inicializarAreas() {
+        // Crear una entidad para el fondo de toda la pantalla
+        FXGL.entityBuilder()
+                .at(0, 0)
+                .view(createImageView("/assets/textures/background.png", 1300, 850)) // Cambia la ruta a tu imagen
+                .buildAndAttach();
 
+        // Crear una entidad para el área de mesas
+        FXGL.entityBuilder()
+                .at(210, 70)
+                .view(createImageView("/assets/textures/dining_area.jpg", 1200, 500)) // Cambia la ruta a tu imagen
+                .buildAndAttach();
 
-        Rectangle kitchenArea = new Rectangle(500, 150, Color.YELLOW);
-        kitchenArea.setTranslateX(kitchen.getX() - 75);
-        kitchenArea.setTranslateY(kitchen.getY() - 75);
-        Text kitchenLabel = new Text("Cocina");
-        kitchenLabel.setTranslateX(kitchen.getX() - 25);
-        kitchenLabel.setTranslateY(kitchen.getY() - 100);
+        // Crear una entidad para la cocina
+        FXGL.entityBuilder()
+                .at(1100, 120)
+                .view(createImageView("/assets/textures/kitchen.jpg", 500, 400)) // Cambia la ruta a tu imagen
+                .buildAndAttach();
 
-        /*   FXGL.addUINode(kitchenArea);*/
-        FXGL.addUINode(kitchenLabel);
+        // Crear una entidad para el área de espera
+        FXGL.entityBuilder()
+                .at(30, 150)
+                .view(createImageView("/assets/textures/waiting_area.jpg", 100, 500)) // Cambia la ruta a tu imagen
+                .buildAndAttach();
+
+        // Agregar etiquetas para identificar las áreas
+        addLabel("Cocina", 1150, 30);
+        addLabel("Área de espera", 30, 30);
+        addLabel("Área de mesas", 550, 30);
+    }
+
+    // Método para crear un ImageView
+    private ImageView createImageView(String path, double width, double height) {
+        Image image = new Image(path);
+        ImageView imageView = new ImageView(image);
+        imageView.setFitWidth(width);
+        imageView.setFitHeight(height);
+        return imageView;
+    }
+
+    // Método para agregar etiquetas
+    private void addLabel(String text, double x, double y) {
+        Text label = new Text(text);
+        label.setTranslateX(x);
+        label.setTranslateY(y);
+        FXGL.addUINode(label);
     }
 
     private void inicializarMesas() {
