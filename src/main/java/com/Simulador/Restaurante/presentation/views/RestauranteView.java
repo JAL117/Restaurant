@@ -347,7 +347,7 @@ public class RestauranteView extends FXGLScene {
             FXGL.runOnce(() -> {
                 System.out.println("Comensal " + comensalId + " terminó de comer.");
                 retirarComensal(comensalId);
-            }, Duration.seconds(tiempoDeComida)); 
+            }, Duration.seconds(tiempoDeComida));
         });
     }
 
