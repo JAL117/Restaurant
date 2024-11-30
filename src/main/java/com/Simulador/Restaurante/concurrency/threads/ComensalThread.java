@@ -25,9 +25,49 @@ public class ComensalThread extends Thread {
         this.view = view;
         this.ordenMonitor = ordenMonitor;
     }
-
-
     @Override
+    public void run() {
+        try {
+            // 1. Animaciones iniciales: entrada y asignación de mesa
+            view.moverComensalAEntrada(comensal.getId());
+            Thread.sleep(500); // Simulación breve
+
+            view.moverComensalARecepcion(comensal.getId());
+            System.out.println("Recepcionista está registrando al Comensal " + comensal.getId());
+
+            Mesa mesa = mesaMonitor.asignarMesa(comensal);
+            recepcionista.asignarMesa(comensal, mesa);
+
+            view.moverComensalAMesa(comensal.getId(), mesa.getNumero());
+            view.asignarMesa(comensal.getId(), mesa.getNumero());
+            System.out.println("Comensal " + comensal.getId() + " asignado a la Mesa " + mesa.getNumero());
+
+            view.actualizarEstadoMesa(mesa.getNumero(), mesa.getEstado());
+
+            // 2. Agregar comensal a la cola de espera
+            comensalMonitor.agregarComensal(comensal);
+
+            // 3. Esperar a que el mesero entregue la comida
+            synchronized (comensal) {
+                comensal.wait();
+            }
+
+            // 4. Simular el tiempo de comida
+            System.out.println("Comensal " + comensal.getId() + " está comiendo.");
+            Thread.sleep(5000); // Tiempo de comer
+
+            // 5. Animaciones de salida
+            System.out.println("Comensal " + comensal.getId() + " ha terminado de comer y se va.");
+            mesaMonitor.liberarMesa(mesa);
+            view.actualizarEstadoMesa(mesa.getNumero(), mesa.getEstado());
+            view.retirarComensal(comensal.getId());
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+    }
+
+
+  /*  @Override
     public void run() {
         try {
             // Mover al comensal a la entrada
@@ -67,47 +107,6 @@ public class ComensalThread extends Thread {
             mesaMonitor.liberarMesa(mesa);
             view.actualizarEstadoMesa(mesa.getNumero(), mesa.getEstado());
             view.retirarComensal(comensal.getId());
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
-    }
-
-   /* public void run() {
-        try {
-            view.moverComensalAEntrada(comensal.getId());
-            Thread.sleep(500);
-
-            view.moverComensalARecepcion(comensal.getId());
-
-            System.out.println("Recepcionista está registrando al Comensal " + comensal.getId());
-
-            Mesa mesa = mesaMonitor.asignarMesa(comensal);
-            recepcionista.asignarMesa(comensal, mesa);
-
-            view.moverComensalAMesa(comensal.getId() , mesa.getNumero());
-
-            System.out.println("Recepcionista ha asignado la Mesa " + mesa.getNumero());
-
-            view.actualizarEstadoMesa(mesa.getNumero(), mesa.getEstado());
-
-
-            comensalMonitor.agregarComensal(comensal);
-            System.out.println("Comensal " + comensal.getId() + " añadido a la cola de espera.");
-
-            synchronized (comensal) {
-                comensal.wait();
-            }
-
-            Thread.sleep(5000);
-            view.moverComensalFuera(comensal.getId());
-            System.out.println("Comensal " + comensal.getId() + " ha terminado de comer y se va.");
-            view.retirarComensal(comensal.getId());
-
-            Thread.sleep(5000);
-
-            mesaMonitor.liberarMesa(mesa);
-            view.actualizarEstadoMesa(mesa.getNumero(), mesa.getEstado());
-
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }

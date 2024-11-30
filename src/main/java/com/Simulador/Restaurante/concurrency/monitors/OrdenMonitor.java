@@ -14,6 +14,7 @@ public class OrdenMonitor {
 
     public synchronized void agregarOrden(Orden orden) {
         bufferOrdenes.add(orden);
+
         notifyAll();
     }
 

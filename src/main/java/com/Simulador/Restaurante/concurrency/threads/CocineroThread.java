@@ -30,7 +30,7 @@ public class CocineroThread extends Thread {
                 System.out.println("Orden " + orden.getId() + " retirada del buffer de órdenes.");
                 System.out.println("Cocinero " + cocinero.getId() + " está preparando la Orden " + orden.getId());
 
-                Thread.sleep(3000);
+                Thread.sleep(5000);
 
                 comidaMonitor.agregarComida(orden);
                 System.out.println("Cocinero " + cocinero.getId() + " ha terminado de preparar la Orden " + orden.getId());

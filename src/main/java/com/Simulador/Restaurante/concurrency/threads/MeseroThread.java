@@ -29,38 +29,45 @@ public class MeseroThread extends Thread {
     public void run() {
         try {
             while (true) {
-
+                // 1. Retirar comensal de la cola de espera
                 Comensal comensal = comensalMonitor.retirarComensal();
                 Mesa mesa = comensal.getMesaAsignada();
-                System.out.println("Comensal " + comensal.getId() + " retirado de la cola de espera.");
+
+                // 2. Animación de atender al comensal
                 view.atenderMesa(comensal.getId(), mesa.getNumero());
+                view.moverMesero(mesero.getId(), mesa.getPosX() + 20, mesa.getPosY());
                 System.out.println("Mesero " + mesero.getId() + " está atendiendo al Comensal " + comensal.getId());
 
+                Thread.sleep(1000); // Simular el tiempo de atención
 
-                view.moverMesero(mesero.getId(), mesa.getPosX() + 20, mesa.getPosY());
-
-                Thread.sleep(1000);
+                // 3. Crear y agregar la orden
                 Orden orden = new Orden(comensal.getId(), comensal.getId());
                 ordenMonitor.agregarOrden(orden);
                 System.out.println("Orden " + orden.getId() + " añadida al buffer de órdenes.");
 
-
+                // 4. Esperar a que la comida esté lista
                 Orden comidaLista = comidaMonitor.obtenerComida(orden.getId());
                 System.out.println("Comida " + comidaLista.getId() + " retirada del buffer de comidas.");
 
+                // 5. Animación de entregar la comida
+                view.entregarOrden(mesero.getId(),mesa.getNumero());
                 System.out.println("Mesero " + mesero.getId() + " está sirviendo la Orden " + comidaLista.getId());
 
-                view.entregarOrden(mesero.getId(), mesa.getNumero());
+                Thread.sleep(5000); // Simular el tiempo de entrega
 
+                // 6. Notificar al comensal para que pueda comer
                 synchronized (comensal) {
                     comensal.notify();
                 }
 
+                // 7. Regresar a la recepción
                 view.moverMesero(mesero.getId(), view.getReceptionX() + 50, view.getReceptionY() + mesero.getId() * 15);
             }
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
     }
+
+
 }
 
