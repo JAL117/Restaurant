@@ -38,7 +38,7 @@ public class MeseroThread extends Thread {
                 view.moverMesero(mesero.getId(), mesa.getPosX() + 10, mesa.getPosY()-30);
                 System.out.println("Mesero " + mesero.getId() + " está atendiendo al Comensal " + comensal.getId());
 
-                Thread.sleep(1000); // Simular el tiempo de atención
+                Thread.sleep(500); // Simular el tiempo de atención
 
                 // 3. Crear y agregar la orden
                 Orden orden = new Orden(comensal.getId(), comensal.getId());
@@ -53,10 +53,10 @@ public class MeseroThread extends Thread {
 
                 System.out.println("Mesero " + mesero.getId() + " está sirviendo la Orden " + comidaLista.getId());
 
-                Thread.sleep(2000); // Simular el tiempo de entrega
+                Thread.sleep(500); // Simular el tiempo de entrega
                 view.entregarOrden(mesero.getId(),mesa.getNumero());
 
-                
+
                 // 6. Notificar al comensal para que pueda comer
                 synchronized (comensal) {
                     comensal.notify();

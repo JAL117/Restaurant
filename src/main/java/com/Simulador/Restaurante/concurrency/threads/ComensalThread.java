@@ -8,6 +8,8 @@ import com.Simulador.Restaurante.concurrency.monitors.MesaMonitor;
 import com.Simulador.Restaurante.concurrency.monitors.OrdenMonitor;
 import com.Simulador.Restaurante.presentation.views.RestauranteView;
 
+import java.util.Random;
+
 public class ComensalThread extends Thread {
     private final Comensal comensal;
     private final Recepcionista recepcionista;
@@ -30,7 +32,7 @@ public class ComensalThread extends Thread {
         try {
             // 1. Animaciones iniciales: entrada y asignación de mesa
             view.moverComensalAEntrada(comensal.getId());
-            Thread.sleep(500); // Simulación breve
+            Thread.sleep(2000); // Simulación breve
 
             view.moverComensalARecepcion(comensal.getId());
             System.out.println("Recepcionista está registrando al Comensal " + comensal.getId());
@@ -52,9 +54,12 @@ public class ComensalThread extends Thread {
                 comensal.wait();
             }
 
+
+            Random random = new Random();
+            int tiempoDeComida = 500 + random.nextInt(2000);
             // 4. Simular el tiempo de comida
             System.out.println("Comensal " + comensal.getId() + " está comiendo.");
-            Thread.sleep(5000); // Tiempo de comer
+            Thread.sleep(tiempoDeComida); // Tiempo de comer
 
             // 5. Animaciones de salida
             System.out.println("Comensal " + comensal.getId() + " ha terminado de comer y se va.");
@@ -67,48 +72,4 @@ public class ComensalThread extends Thread {
     }
 
 
-  /*  @Override
-    public void run() {
-        try {
-            // Mover al comensal a la entrada
-            view.moverComensalAEntrada(comensal.getId());
-            Thread.sleep(500);  // Es posible que este pequeño retraso sea innecesario
-
-            // Mover al comensal a la recepción
-            view.moverComensalARecepcion(comensal.getId());
-
-            System.out.println("Recepcionista está registrando al Comensal " + comensal.getId());
-
-            Mesa mesa = mesaMonitor.asignarMesa(comensal);
-            recepcionista.asignarMesa(comensal, mesa);
-
-            // Mover al comensal a su mesa
-            view.moverComensalAMesa(comensal.getId(), mesa.getNumero());
-            System.out.println("Recepcionista ha asignado la Mesa " + mesa.getNumero());
-            view.asignarMesa(comensal.getId(), mesa.getNumero());
-
-            // Actualizar estado de la mesa
-            view.actualizarEstadoMesa(mesa.getNumero(), mesa.getEstado());
-
-            // Agregar el comensal a la cola de espera
-            comensalMonitor.agregarComensal(comensal);
-            System.out.println("Comensal " + comensal.getId() + " añadido a la cola de espera.");
-
-            // Esperar hasta que el comensal termine
-            synchronized (comensal) {
-                comensal.wait();  // El comensal espera hasta que se le notifique
-            }
-
-            // Realizar la animación del comensal saliendo
-            System.out.println("Comensal " + comensal.getId() + " ha terminado de comer y se va.");
-
-
-            // Liberar la mesa y actualizar su estado
-            mesaMonitor.liberarMesa(mesa);
-            view.actualizarEstadoMesa(mesa.getNumero(), mesa.getEstado());
-            view.retirarComensal(comensal.getId());
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
-    }*/
 }

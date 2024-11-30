@@ -36,7 +36,7 @@ public class RestauranteView extends FXGLScene {
     private final Text ordenesProcesadasText;
 
     private final Point2D entrance = new Point2D(50, 50);
-    private final Point2D kitchen = new Point2D(850, 300);
+    private final Point2D kitchen = new Point2D(950, 300);
     private final Point2D reception = new Point2D(50, 100);
 
     private int totalCocineros;
@@ -45,16 +45,15 @@ public class RestauranteView extends FXGLScene {
         super(1000, 600);
         this.mesas = mesas;
 
-        // Inicializar áreas principales
+
         inicializarAreas();
 
-        // Inicializar mesas visuales
+
         inicializarMesas();
 
-        // Inicializar recepcionista visual
+
         inicializarRecepcionista();
 
-        // Crear barra de estado
         statusBox = new VBox(10);
         statusBox.setTranslateX(800);
         statusBox.setTranslateY(10);
@@ -62,22 +61,26 @@ public class RestauranteView extends FXGLScene {
         ordenesProcesadasText = new Text("Órdenes Procesadas: 0");
         statusBox.getChildren().addAll(totalComensalesText, ordenesProcesadasText);
 
-        // Agregar la barra de estado a la escena
         FXGL.addUINode(statusBox);
     }
 
     private void inicializarAreas() {
-
-
-        Rectangle kitchenArea = new Rectangle(500, 150, Color.YELLOW);
-        kitchenArea.setTranslateX(kitchen.getX() - 75);
-        kitchenArea.setTranslateY(kitchen.getY() - 75);
+        // Inicializar otros elementos visuales
         Text kitchenLabel = new Text("Cocina");
-        kitchenLabel.setTranslateX(kitchen.getX() - 25);
-        kitchenLabel.setTranslateY(kitchen.getY() - 100);
-
-        /*   FXGL.addUINode(kitchenArea);*/
+        kitchenLabel.setTranslateX(kitchen.getX() + 15);
+        kitchenLabel.setTranslateY(kitchen.getY() - 10);
         FXGL.addUINode(kitchenLabel);
+    }
+
+    public void añadirCocinero(int cocineroId) {
+        runOnce(() -> {
+            Entity cocinero = entityBuilder()
+                    .at(kitchen.add(30 * (cocineroId - 1), 0)) // Posicionar cocineros en fila en la cocina
+                    .view(new Rectangle(20, 20, Color.RED))
+                    .buildAndAttach();
+            cocinerosVisuales.put(cocineroId, cocinero);
+            return null;
+        }, Duration.seconds(0)); // Ejecutar inmediatamente
     }
 
     private void inicializarMesas() {
@@ -156,16 +159,7 @@ public class RestauranteView extends FXGLScene {
         ordenesProcesadasText.setText("Órdenes Procesadas: " + total);
     }
 
-    public void añadirCocinero(int cocineroId) {
-        runOnce(() -> {
-            Entity cocinero = entityBuilder()
-                    .at(kitchen.add(30 * (cocineroId - 1), 0)) // Posicionar cocineros en fila en la cocina
-                    .view(new Rectangle(20, 20, Color.RED))
-                    .buildAndAttach();
-            cocinerosVisuales.put(cocineroId, cocinero);
-            return null;
-        }, Duration.seconds(0)); // Ejecutar inmediatamente
-    }
+
 
     //MESERO
     public void añadirMesero(int meseroId) {
