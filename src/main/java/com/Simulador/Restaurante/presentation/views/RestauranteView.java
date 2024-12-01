@@ -31,9 +31,6 @@ public class RestauranteView extends FXGLScene {
     private final Map<Integer, Entity> cocinerosVisuales = new HashMap<>();
     private Entity recepcionistaVisual;
 
-    private final VBox statusBox;
-    private final Text totalComensalesText;
-    private final Text ordenesProcesadasText;
 
     private final Point2D entrance = new Point2D(50, 50);
     private final Point2D kitchen = new Point2D(950, 300);
@@ -45,23 +42,12 @@ public class RestauranteView extends FXGLScene {
         super(1000, 600);
         this.mesas = mesas;
 
-
         inicializarAreas();
-
 
         inicializarMesas();
 
-
         inicializarRecepcionista();
 
-        statusBox = new VBox(10);
-        statusBox.setTranslateX(800);
-        statusBox.setTranslateY(10);
-        totalComensalesText = new Text("Total Comensales: 0");
-        ordenesProcesadasText = new Text("Órdenes Procesadas: 0");
-        statusBox.getChildren().addAll(totalComensalesText, ordenesProcesadasText);
-
-        FXGL.addUINode(statusBox);
     }
 
     private void inicializarAreas() {
@@ -146,13 +132,6 @@ public class RestauranteView extends FXGLScene {
         });
     }
 
-    public void actualizarTotalComensales(int total) {
-        totalComensalesText.setText("Total Comensales: " + total);
-    }
-
-    public void actualizarOrdenesProcesadas(int total) {
-        ordenesProcesadasText.setText("Órdenes Procesadas: " + total);
-    }
 
 
 

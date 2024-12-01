@@ -73,9 +73,9 @@ public class RestaurantSimulator extends GameApplication {
 
         restauranteService = new RestauranteService(capacidadMesas, cantidadMeseros, cantidadCocineros);
         restauranteView = restauranteService.getView();
-         restauranteView.añadirComensal(RandomUtils.generarTiempoAleatorio(1 , 2));
+         restauranteView.añadirComensal(RandomUtils.generarTiempoAleatorio(1 , 10));
         restauranteService.iniciarSimulacion();
-        // Agregar la vista principal al juego
+
         getGameScene().addUINode(restauranteView.getRoot());
 
     }

@@ -95,7 +95,7 @@ public class RestauranteService {
                     comensalThread.start();
 
                     totalComensales++;
-                    view.actualizarTotalComensales(totalComensales);
+
 
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
@@ -116,7 +116,7 @@ public class RestauranteService {
 
     public synchronized void incrementarOrdenesProcesadas() {
         ordenesProcesadas++;
-        view.actualizarOrdenesProcesadas(ordenesProcesadas);
+
     }
 
     public RestauranteView getView() {
