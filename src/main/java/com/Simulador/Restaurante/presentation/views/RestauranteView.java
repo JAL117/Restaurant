@@ -9,6 +9,7 @@ import com.almasb.fxgl.entity.Entity;
 
 import javafx.application.Platform;
 import javafx.geometry.Point2D;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -52,46 +53,68 @@ public class RestauranteView extends FXGLScene {
     }
 
     private void inicializarAreas() {
-        // Fondo del piso
-        var piso = FXGL.getAssetLoader().loadTexture("background.png", getWidth(), getHeight());
-        addUINode(piso);
+
+
 
         // Fondo de la cocina
-        var cocina = FXGL.getAssetLoader().loadTexture("background.png", 200, 150);
-        cocina.setTranslateX(kitchen.getX() - 50);
-        cocina.setTranslateY(kitchen.getY() - 50);
-        addUINode(cocina);
+        Image cocinaImage = new Image(getClass().getResource("/assets/textures/cocina.png").toExternalForm());
+        ImageView cocinaImageView = new ImageView(cocinaImage);
+        cocinaImageView.setFitWidth(250); // Ajusta según el tamaño
+        cocinaImageView.setFitHeight(500); // Ajusta según el tamaño
+        cocinaImageView.setTranslateX(kitchen.getX() + 100);
+        cocinaImageView.setTranslateY(kitchen.getY() - 300);
+
+        // Asegúrate de agregar el fondo de la cocina detrás de las entidades
+        FXGL.getGameScene().getContentRoot().getChildren().add(0, cocinaImageView);
 
         // Fondo de la recepción
-        var recepcion = FXGL.getAssetLoader().loadTexture("background.png", 150, 100);
-        recepcion.setTranslateX(reception.getX() - 25);
-        recepcion.setTranslateY(reception.getY() - 25);
-        addUINode(recepcion);
+        Image recepcionImage = new Image(getClass().getResource("/assets/textures/fondo.png").toExternalForm());
+        ImageView recepcionImageView = new ImageView(recepcionImage);
+        recepcionImageView.setFitWidth(150); // Ajusta según el tamaño
+        recepcionImageView.setFitHeight(100); // Ajusta según el tamaño
+        recepcionImageView.setTranslateX(reception.getX() - 25);
+        recepcionImageView.setTranslateY(reception.getY() - 25);
 
-        // Etiqueta de la cocina
-        Text kitchenLabel = new Text("Cocina");
-        kitchenLabel.setTranslateX(kitchen.getX() + 15);
-        kitchenLabel.setTranslateY(kitchen.getY() - 10);
-        FXGL.addUINode(kitchenLabel);
+        // Asegúrate de agregar el fondo de la recepción detrás de las entidades
+        FXGL.getGameScene().getContentRoot().getChildren().add(0, recepcionImageView);
+
+
     }
+
 
 
     public void añadirCocinero(int cocineroId) {
         runOnce(() -> {
+            // Ajustar las coordenadas para distribución vertical
+            double xPos = kitchen.getX() + 220;  // Mantén la misma posición en el eje X (ajústalo según sea necesario)
+            double yPos = kitchen.getY() - 50 * (cocineroId - 1);  // Desplazamiento vertical
+
+            // Cargar la imagen del cocinero
+            Image imagenCocinero = new Image(getClass().getResource("/assets/textures/cocinero.png").toExternalForm());
+            ImageView imagenViewCocinero = new ImageView(imagenCocinero);
+            imagenViewCocinero.setFitWidth(40); // Ajusta el tamaño de la imagen
+            imagenViewCocinero.setFitHeight(40); // Ajusta el tamaño de la imagen
+
+            // Creación del cocinero
             Entity cocinero = entityBuilder()
-                    .at(kitchen.add(30 * (cocineroId - 1), 0))
-                    .view(new Rectangle(20, 20, Color.RED))
+                    .at(xPos, yPos)  // Usa las coordenadas ajustadas
+                    .view(imagenViewCocinero) // Usa la imagen en lugar del rectángulo
                     .buildAndAttach();
+
+            // Guardar al cocinero
             cocinerosVisuales.put(cocineroId, cocinero);
             return null;
         }, Duration.seconds(0));
     }
 
+
+
+
     private void inicializarMesas() {
         int columnas = 5;
-        double startX = 300;
+        double startX = 400;
         double startY = 200;
-        double offsetX = 100;
+        double offsetX = 130;
         double offsetY = 100;
 
         for (Mesa mesa : mesas) {
@@ -106,11 +129,19 @@ public class RestauranteView extends FXGLScene {
 
             mesa.setPosicion(x, y);
 
+            // Cargar la imagen de la mesa (por defecto estará libre)
+            Image mesaLibreImage = new Image(getClass().getResource("/assets/textures/mesa.png").toExternalForm());
+            ImageView mesaLibreView = new ImageView(mesaLibreImage);
+            mesaLibreView.setFitWidth(40);  // Ajusta el tamaño de la imagen
+            mesaLibreView.setFitHeight(40); // Ajusta el tamaño de la imagen
+
+            // Crear la entidad para la mesa
             Entity mesaEntity = FXGL.entityBuilder()
                     .at(x, y)
-                    .viewWithBBox(new Rectangle(40, 40, Color.GREEN))
+                    .view(mesaLibreView) // Usar la imagen por defecto
                     .buildAndAttach();
 
+            // Agregar el número de la mesa
             Text label = new Text(String.valueOf(numeroMesa));
             label.setTranslateX(x - 10);
             label.setTranslateY(y - 10);
@@ -119,6 +150,32 @@ public class RestauranteView extends FXGLScene {
             mesasVisuales.put(numeroMesa, mesaEntity);
         }
     }
+
+    public void actualizarEstadoMesa(int numeroMesa, EstadoMesa estado) {
+        Platform.runLater(() -> {
+            Entity mesaEntity = mesasVisuales.get(numeroMesa);
+
+            if (mesaEntity != null) {
+                Image mesaImage;
+
+                // Dependiendo del estado, cambiar la imagen
+                if (estado == EstadoMesa.LIBRE) {
+                    mesaImage = new Image(getClass().getResource("/assets/textures/mesa.png").toExternalForm());
+                } else {
+                    mesaImage = new Image(getClass().getResource("/assets/textures/mesa_ocupada.png").toExternalForm());
+                }
+
+                // Cambiar la imagen de la mesa
+                mesaEntity.getViewComponent().clearChildren();
+                ImageView mesaView = new ImageView(mesaImage);
+                mesaView.setFitWidth(40);  // Ajustar al tamaño deseado
+                mesaView.setFitHeight(40); // Ajustar al tamaño deseado
+                mesaEntity.getViewComponent().addChild(mesaView);
+            }
+        });
+    }
+
+
 
     private void inicializarRecepcionista() {
         recepcionistaVisual = FXGL.entityBuilder()
@@ -135,20 +192,6 @@ public class RestauranteView extends FXGLScene {
         this.totalCocineros = totalCocineros;
     }
 
-    public void actualizarEstadoMesa(int numeroMesa, EstadoMesa estado) {
-        Platform.runLater(() -> {
-            Entity mesaEntity = mesasVisuales.get(numeroMesa);
-
-            if (mesaEntity != null) {
-                Color color = (estado == EstadoMesa.LIBRE) ? Color.GREEN : Color.RED;
-
-                mesaEntity.getViewComponent().clearChildren();
-
-                mesaEntity.getViewComponent().addChild(new Rectangle(40, 40, color));
-
-            }
-        });
-    }
 
 
 
@@ -221,34 +264,6 @@ public class RestauranteView extends FXGLScene {
 
     //COMENSAL
 
-    public void añadirComensal(int comensalId) {
-        runOnce(() -> {
-            Entity comensal = entityBuilder()
-                    .at(entrance.add(-80, 0))
-                    .view(new Rectangle(20, 20, Color.BLUE))
-                    .buildAndAttach();
-
-            comensalesVisuales.put(comensalId, comensal);
-
-         var entradaAnimation = animationBuilder()
-                    .duration(Duration.seconds(1))
-                    .interpolator(Interpolators.SMOOTH.EASE_IN())
-                    .translate(comensal)
-                    .to(entrance)
-                    .build();
-
-            entradaAnimation.setOnFinished(() -> {
-
-                moverComensal(comensalId, reception.getX(), reception.getY(), () -> {
-                    System.out.println("Comensal " + comensalId + " llegó a recepción");
-                });
-            });
-
-            entradaAnimation.start();
-
-            return null;
-        }, Duration.ZERO);
-    }
 
     public void moverComensalAMesa(int comensalId, int numeroMesa) {
         Entity comensal = comensalesVisuales.get(comensalId);
