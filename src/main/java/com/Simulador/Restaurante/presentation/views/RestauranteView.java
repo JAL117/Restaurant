@@ -62,21 +62,23 @@ public class RestauranteView extends FXGLScene {
         cocinaImageView.setFitWidth(250); // Ajusta según el tamaño
         cocinaImageView.setFitHeight(500); // Ajusta según el tamaño
         cocinaImageView.setTranslateX(kitchen.getX() + 100);
-        cocinaImageView.setTranslateY(kitchen.getY() - 300);
+        cocinaImageView.setTranslateY(kitchen.getY() - 250);
 
         // Asegúrate de agregar el fondo de la cocina detrás de las entidades
         FXGL.getGameScene().getContentRoot().getChildren().add(0, cocinaImageView);
 
         // Fondo de la recepción
-        Image recepcionImage = new Image(getClass().getResource("/assets/textures/fondo.png").toExternalForm());
+        Image recepcionImage = new Image(getClass().getResource("/assets/textures/recepcion.png").toExternalForm());
         ImageView recepcionImageView = new ImageView(recepcionImage);
-        recepcionImageView.setFitWidth(150); // Ajusta según el tamaño
-        recepcionImageView.setFitHeight(100); // Ajusta según el tamaño
-        recepcionImageView.setTranslateX(reception.getX() - 25);
-        recepcionImageView.setTranslateY(reception.getY() - 25);
+        recepcionImageView.setFitWidth(120); // Ajusta según el tamaño
+        recepcionImageView.setFitHeight(200); // Ajusta según el tamaño
+        recepcionImageView.setTranslateX(reception.getX() - 40);
+        recepcionImageView.setTranslateY(reception.getY() - 50);
 
         // Asegúrate de agregar el fondo de la recepción detrás de las entidades
         FXGL.getGameScene().getContentRoot().getChildren().add(0, recepcionImageView);
+
+
 
 
     }
@@ -86,14 +88,14 @@ public class RestauranteView extends FXGLScene {
     public void añadirCocinero(int cocineroId) {
         runOnce(() -> {
             // Ajustar las coordenadas para distribución vertical
-            double xPos = kitchen.getX() + 220;  // Mantén la misma posición en el eje X (ajústalo según sea necesario)
-            double yPos = kitchen.getY() - 50 * (cocineroId - 1);  // Desplazamiento vertical
+            double xPos = kitchen.getX() + 200;  // Mantén la misma posición en el eje X (ajústalo según sea necesario)
+            double yPos = kitchen.getY() - 80 * (cocineroId - 1);  // Desplazamiento vertical
 
             // Cargar la imagen del cocinero
-            Image imagenCocinero = new Image(getClass().getResource("/assets/textures/cocinero.png").toExternalForm());
+            Image imagenCocinero = new Image(getClass().getResource("/assets/textures/cocinero1.png").toExternalForm());
             ImageView imagenViewCocinero = new ImageView(imagenCocinero);
-            imagenViewCocinero.setFitWidth(40); // Ajusta el tamaño de la imagen
-            imagenViewCocinero.setFitHeight(40); // Ajusta el tamaño de la imagen
+            imagenViewCocinero.setFitWidth(80); // Ajusta el tamaño de la imagen
+            imagenViewCocinero.setFitHeight(80); // Ajusta el tamaño de la imagen
 
             // Creación del cocinero
             Entity cocinero = entityBuilder()
@@ -132,8 +134,8 @@ public class RestauranteView extends FXGLScene {
             // Cargar la imagen de la mesa (por defecto estará libre)
             Image mesaLibreImage = new Image(getClass().getResource("/assets/textures/mesa.png").toExternalForm());
             ImageView mesaLibreView = new ImageView(mesaLibreImage);
-            mesaLibreView.setFitWidth(40);  // Ajusta el tamaño de la imagen
-            mesaLibreView.setFitHeight(40); // Ajusta el tamaño de la imagen
+            mesaLibreView.setFitWidth(60);  // Ajusta el tamaño de la imagen
+            mesaLibreView.setFitHeight(60); // Ajusta el tamaño de la imagen
 
             // Crear la entidad para la mesa
             Entity mesaEntity = FXGL.entityBuilder()
@@ -168,8 +170,8 @@ public class RestauranteView extends FXGLScene {
                 // Cambiar la imagen de la mesa
                 mesaEntity.getViewComponent().clearChildren();
                 ImageView mesaView = new ImageView(mesaImage);
-                mesaView.setFitWidth(40);  // Ajustar al tamaño deseado
-                mesaView.setFitHeight(40); // Ajustar al tamaño deseado
+                mesaView.setFitWidth(60);  // Ajustar al tamaño deseado
+                mesaView.setFitHeight(60); // Ajustar al tamaño deseado
                 mesaEntity.getViewComponent().addChild(mesaView);
             }
         });
@@ -178,10 +180,19 @@ public class RestauranteView extends FXGLScene {
 
 
     private void inicializarRecepcionista() {
+        // Cargar la imagen de la recepcionista
+        Image imagenRecepcionista = new Image(getClass().getResource("/assets/textures/recepcionista.png").toExternalForm());
+        ImageView imagenViewRecepcionista = new ImageView(imagenRecepcionista);
+        imagenViewRecepcionista.setFitWidth(60); // Ajusta el tamaño de la imagen
+        imagenViewRecepcionista.setFitHeight(60); // Ajusta el tamaño de la imagen
+
+        // Crear la entidad de la recepcionista
         recepcionistaVisual = FXGL.entityBuilder()
-                .at(reception.add(25,-50))
-                .viewWithBBox(new Rectangle(25, 25, Color.PURPLE))
+                .at(reception.add(25, -50)) // Posición de la recepcionista
+                .view(imagenViewRecepcionista) // Usar la imagen en lugar del rectángulo
                 .buildAndAttach();
+
+        // Etiqueta con el nombre de la recepcionista
         Text label = new Text("Recepcionista");
         label.setTranslateX(reception.getX() - 15);
         label.setTranslateY(reception.getY() - 70);
@@ -199,14 +210,24 @@ public class RestauranteView extends FXGLScene {
     //MESERO
     public void añadirMesero(int meseroId) {
         runOnce(() -> {
+            // Cargar la imagen del mesero
+            Image imagenMesero = new Image(getClass().getResource("/assets/textures/mesero.png").toExternalForm());
+            ImageView imagenViewMesero = new ImageView(imagenMesero);
+            imagenViewMesero.setFitWidth(60);  // Ajusta el tamaño de la imagen
+            imagenViewMesero.setFitHeight(60); // Ajusta el tamaño de la imagen
+
+            // Crear la entidad para el mesero con la imagen cargada
             Entity mesero = entityBuilder()
-                    .at(reception.add(20 * meseroId, 0))
-                    .view(new Rectangle(20, 20, Color.YELLOW))
+                    .at(reception.add(30 * meseroId, 0))  // Ajusta la posición según el meseroId
+                    .view(imagenViewMesero)  // Usa la imagen del mesero
                     .buildAndAttach();
+
+            // Guardar al mesero en el mapa
             meserosVisuales.put(meseroId, mesero);
             return null;
         }, Duration.seconds(0));
     }
+
 
     public void moverMesero(int meseroId, double x, double y) {
         Entity mesero = meserosVisuales.get(meseroId);
@@ -310,26 +331,33 @@ public class RestauranteView extends FXGLScene {
             // Verificar si el comensal ya existe
             Entity comensal = comensalesVisuales.get(comensalId);
             if (comensal == null) {
+                // Cargar la imagen del comensal
+                Image imagenComensal = new Image(getClass().getResource("/assets/textures/comensal.png").toExternalForm());
+                ImageView imagenViewComensal = new ImageView(imagenComensal);
+                imagenViewComensal.setFitWidth(60); // Ajusta el tamaño de la imagen
+                imagenViewComensal.setFitHeight(60); // Ajusta el tamaño de la imagen
 
+                // Crear la entidad del comensal con la imagen cargada
                 comensal = FXGL.entityBuilder()
                         .at(entrance.add(-50, 10))
-                        .view(new Rectangle(20, 20, Color.BLUE))
+                        .view(imagenViewComensal) // Usa la imagen del comensal
                         .buildAndAttach();
-
 
                 comensalesVisuales.put(comensalId, comensal);
             }
 
-
+            // Animación para mover al comensal
             animationBuilder()
                     .duration(Duration.seconds(1))
                     .interpolator(Interpolators.LINEAR.EASE_IN())
                     .translate(comensal)
                     .to(entrance)
                     .buildAndPlay();
+
             return null;
         }, Duration.ZERO);
     }
+
 
     public void moverComensal(int comensalId, double x, double y, Runnable onFinish) {
         Entity comensal = comensalesVisuales.get(comensalId);
@@ -370,7 +398,7 @@ public class RestauranteView extends FXGLScene {
                     .duration(Duration.seconds(2))
                     .interpolator(Interpolators.LINEAR.EASE_IN())
                     .translate(comensal)
-                    .to(new Point2D(-500, 200))
+                    .to(new Point2D(-500, 400))
                     .buildAndPlay();
 
             runOnce(() -> {
