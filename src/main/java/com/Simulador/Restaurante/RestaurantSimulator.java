@@ -44,8 +44,15 @@ import com.Simulador.Restaurante.business.utils.PoissonDistribution;
 import com.Simulador.Restaurante.presentation.views.RestauranteView;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
+import com.almasb.fxgl.dsl.FXGL;
+import com.almasb.fxgl.texture.Texture;
 import javafx.scene.Scene;
 import com.Simulador.Restaurante.business.utils.RandomUtils;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+
+import java.io.File;
+import java.util.Objects;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.getGameScene;
 
@@ -63,98 +70,43 @@ public class RestaurantSimulator extends GameApplication {
         settings.setMainMenuEnabled(false);
     }
 
+
+
+
+
+
     @Override
     protected void initGame() {
-        // Crear instancia de RestauranteService
+        // Crear instancia del servicio y vista
         int capacidadMesas = 20;
-        int cantidadMeseros = (int) Math.round(capacidadMesas * 0.10);  // 10% de capacidadMesas
-        int cantidadCocineros = (int) Math.round(capacidadMesas * 0.15);  // 15% de capacidadMesas
-
+        int cantidadMeseros = (int) Math.round(capacidadMesas * 0.10);
+        int cantidadCocineros = (int) Math.round(capacidadMesas * 0.15);
 
         restauranteService = new RestauranteService(capacidadMesas, cantidadMeseros, cantidadCocineros);
         restauranteView = restauranteService.getView();
-         restauranteView.añadirComensal(RandomUtils.generarTiempoAleatorio(1 , 10));
+
+        // Cargar la textura del fondo
+
+
+        Image backgroundImage = new Image(getClass().getResource("/assets/textures/fondo.png").toExternalForm());
+        ImageView backgroundImageView = new ImageView(backgroundImage);
+        backgroundImageView.setFitWidth(FXGL.getAppWidth());
+        backgroundImageView.setFitHeight(FXGL.getAppHeight());
+
+        FXGL.getGameScene().getContentRoot().getChildren().add(0, backgroundImageView);
+
+
+        // Iniciar simulación y agregar vista
         restauranteService.iniciarSimulacion();
-
-        getGameScene().addUINode(restauranteView.getRoot());
-
+        FXGL.getGameScene().addUINode(restauranteView.getRoot());
     }
+
+
 
     public static void main(String[] args) {
         launch(args);
     }
 }
-
-
-
-
-
-/*
-package com.Simulador.Restaurante;
-
-import com.Simulador.Restaurante.components.MainMenu;
-import com.Simulador.Restaurante.concurrency.monitors.ComensalMonitor;
-import com.Simulador.Restaurante.concurrency.monitors.ComidaMonitor;
-import com.Simulador.Restaurante.concurrency.monitors.MesaMonitor;
-import com.Simulador.Restaurante.concurrency.monitors.OrdenMonitor;
-import com.Simulador.Restaurante.entities.RestaurantEntityFactory;
-import com.almasb.fxgl.app.GameApplication;
-import com.almasb.fxgl.app.GameSettings;
-import com.almasb.fxgl.app.scene.FXGLMenu;
-import com.almasb.fxgl.app.scene.SceneFactory;
-import com.almasb.fxgl.app.scene.SceneFactory;
-import com.almasb.fxgl.dsl.FXGL;
-import com.Simulador.Restaurante.entities.createEscene;
-import com.almasb.fxgl.entity.EntityFactory;
-
-public class RestaurantSimulator extends GameApplication {
-    private MesaMonitor mesaMonitor;
-    private ComensalMonitor comensalMonitor;
-    private ComidaMonitor comidaMonitor;
-    private OrdenMonitor ordenMonitor;
-
-    @Override
-    protected void initSettings(GameSettings settings) {
-        settings.setWidth(1300);
-        settings.setHeight(650);
-        settings.setTitle("Simulador Restaurante");
-        settings.setVersion("0.1");
-        settings.setMainMenuEnabled(true);
-        settings.setSceneFactory(new SceneFactory() {
-            @Override
-            public FXGLMenu newMainMenu() {
-                return new MainMenu();
-            }
-        });
-    }
-
-    public static void main(String[] args) {
-        launch(args);
-    }
-
-    @Override
-    protected void initGame() {
-        createEscene sceneCreator = new createEscene();
-        sceneCreator.createGameEntities();
-
-        // Inicializa los monitores
-        mesaMonitor = new MesaMonitor(20);
-        comensalMonitor = new ComensalMonitor();
-        comidaMonitor = new ComidaMonitor();
-        ordenMonitor = new OrdenMonitor();
-
-        // Agrega el factory de entidades al juego
-        RestaurantEntityFactory entityFactory = new RestaurantEntityFactory();
-        FXGL.getGameWorld().addEntityFactory(entityFactory);
-
-        // Llama a la función para crear las entidades iniciales
-        entityFactory.spawnInitialEntities();
-    }
-}
-
-*/
-
-
 
 
 

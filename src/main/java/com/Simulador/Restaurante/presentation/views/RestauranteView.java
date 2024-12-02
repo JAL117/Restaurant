@@ -9,6 +9,7 @@ import com.almasb.fxgl.entity.Entity;
 
 import javafx.application.Platform;
 import javafx.geometry.Point2D;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -51,12 +52,29 @@ public class RestauranteView extends FXGLScene {
     }
 
     private void inicializarAreas() {
-        // Inicializar otros elementos visuales
+        // Fondo del piso
+        var piso = FXGL.getAssetLoader().loadTexture("background.png", getWidth(), getHeight());
+        addUINode(piso);
+
+        // Fondo de la cocina
+        var cocina = FXGL.getAssetLoader().loadTexture("background.png", 200, 150);
+        cocina.setTranslateX(kitchen.getX() - 50);
+        cocina.setTranslateY(kitchen.getY() - 50);
+        addUINode(cocina);
+
+        // Fondo de la recepción
+        var recepcion = FXGL.getAssetLoader().loadTexture("background.png", 150, 100);
+        recepcion.setTranslateX(reception.getX() - 25);
+        recepcion.setTranslateY(reception.getY() - 25);
+        addUINode(recepcion);
+
+        // Etiqueta de la cocina
         Text kitchenLabel = new Text("Cocina");
         kitchenLabel.setTranslateX(kitchen.getX() + 15);
         kitchenLabel.setTranslateY(kitchen.getY() - 10);
         FXGL.addUINode(kitchenLabel);
     }
+
 
     public void añadirCocinero(int cocineroId) {
         runOnce(() -> {
@@ -206,7 +224,7 @@ public class RestauranteView extends FXGLScene {
     public void añadirComensal(int comensalId) {
         runOnce(() -> {
             Entity comensal = entityBuilder()
-                    .at(entrance.add(-50, 0))
+                    .at(entrance.add(-80, 0))
                     .view(new Rectangle(20, 20, Color.BLUE))
                     .buildAndAttach();
 
