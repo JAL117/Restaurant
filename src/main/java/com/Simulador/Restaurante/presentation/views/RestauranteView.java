@@ -35,7 +35,7 @@ public class RestauranteView extends FXGLScene {
 
 
     private final Point2D entrance = new Point2D(50, 50);
-    private final Point2D kitchen = new Point2D(950, 300);
+    private final Point2D kitchen = new Point2D(750, 300);
     private final Point2D reception = new Point2D(50, 100);
 
     private int totalCocineros;
@@ -114,7 +114,7 @@ public class RestauranteView extends FXGLScene {
 
     private void inicializarMesas() {
         int columnas = 5;
-        double startX = 400;
+        double startX = 200;
         double startY = 200;
         double offsetX = 130;
         double offsetY = 100;
@@ -210,19 +210,19 @@ public class RestauranteView extends FXGLScene {
     //MESERO
     public void añadirMesero(int meseroId) {
         runOnce(() -> {
-            // Cargar la imagen del mesero
+
             Image imagenMesero = new Image(getClass().getResource("/assets/textures/mesero.png").toExternalForm());
             ImageView imagenViewMesero = new ImageView(imagenMesero);
             imagenViewMesero.setFitWidth(60);  // Ajusta el tamaño de la imagen
             imagenViewMesero.setFitHeight(60); // Ajusta el tamaño de la imagen
 
-            // Crear la entidad para el mesero con la imagen cargada
+
             Entity mesero = entityBuilder()
-                    .at(reception.add(30 * meseroId, 0))  // Ajusta la posición según el meseroId
-                    .view(imagenViewMesero)  // Usa la imagen del mesero
+                    .at(reception.add(30 * meseroId, 0))
+                    .view(imagenViewMesero)
                     .buildAndAttach();
 
-            // Guardar al mesero en el mapa
+
             meserosVisuales.put(meseroId, mesero);
             return null;
         }, Duration.seconds(0));
@@ -328,25 +328,25 @@ public class RestauranteView extends FXGLScene {
 
     public void moverComensalAEntrada(int comensalId) {
         runOnce(() -> {
-            // Verificar si el comensal ya existe
+
             Entity comensal = comensalesVisuales.get(comensalId);
             if (comensal == null) {
-                // Cargar la imagen del comensal
+
                 Image imagenComensal = new Image(getClass().getResource("/assets/textures/comensal.png").toExternalForm());
                 ImageView imagenViewComensal = new ImageView(imagenComensal);
-                imagenViewComensal.setFitWidth(60); // Ajusta el tamaño de la imagen
-                imagenViewComensal.setFitHeight(60); // Ajusta el tamaño de la imagen
+                imagenViewComensal.setFitWidth(60);
+                imagenViewComensal.setFitHeight(60);
 
-                // Crear la entidad del comensal con la imagen cargada
+
                 comensal = FXGL.entityBuilder()
                         .at(entrance.add(-50, 10))
-                        .view(imagenViewComensal) // Usa la imagen del comensal
+                        .view(imagenViewComensal)
                         .buildAndAttach();
 
                 comensalesVisuales.put(comensalId, comensal);
             }
 
-            // Animación para mover al comensal
+
             animationBuilder()
                     .duration(Duration.seconds(1))
                     .interpolator(Interpolators.LINEAR.EASE_IN())
@@ -409,12 +409,6 @@ public class RestauranteView extends FXGLScene {
             }, Duration.seconds(1));
         }
     }
-
-
-
-
-
-
 
 
 }
