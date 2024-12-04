@@ -26,7 +26,7 @@ public class RestauranteView extends FXGLScene {
     private Entity recepcionistaVisual;
     private final Point2D entrance = new Point2D(50, 50);
     private final Point2D kitchen = new Point2D(750, 300);
-    private final Point2D reception = new Point2D(50, 100);
+    private final Point2D reception = new Point2D(40, 100);
     private int totalCocineros;
 
     public RestauranteView(List<Mesa> mesas) {
@@ -71,8 +71,8 @@ public class RestauranteView extends FXGLScene {
 
     private void inicializarMesas() {
         int columnas = 5;
-        double startX = 200;
-        double startY = 200;
+        double startX = 250;
+        double startY = 100;
         double offsetX = 130;
         double offsetY = 100;
 
@@ -114,15 +114,11 @@ public class RestauranteView extends FXGLScene {
     }
 
     private void inicializarRecepcionista() {
-        Image imagenRecepcionista = new Image(getClass().getResource("/assets/textures/recepcionista.png").toExternalForm());
+        Image imagenRecepcionista = new Image(getClass().getResource("/assets/textures/recepcion1.png").toExternalForm());
         ImageView imagenViewRecepcionista = new ImageView(imagenRecepcionista);
-        imagenViewRecepcionista.setFitWidth(60);
-        imagenViewRecepcionista.setFitHeight(60);
-        recepcionistaVisual = FXGL.entityBuilder().at(reception.add(25, -50)).view(imagenViewRecepcionista).buildAndAttach();
-        Text label = new Text("Recepcionista");
-        label.setTranslateX(reception.getX() - 15);
-        label.setTranslateY(reception.getY() - 70);
-        FXGL.addUINode(label);
+        imagenViewRecepcionista.setFitWidth(70);
+        imagenViewRecepcionista.setFitHeight(70);
+        recepcionistaVisual = FXGL.entityBuilder().at(reception.add(20, -85)).view(imagenViewRecepcionista).buildAndAttach();
     }
 
     public void setTotalCocineros(int totalCocineros) {
@@ -131,10 +127,10 @@ public class RestauranteView extends FXGLScene {
 
     public void añadirMesero(int meseroId) {
         runOnce(() -> {
-            Image imagenMesero = new Image(getClass().getResource("/assets/textures/mesero.png").toExternalForm());
+            Image imagenMesero = new Image(getClass().getResource("/assets/textures/recep.png").toExternalForm());
             ImageView imagenViewMesero = new ImageView(imagenMesero);
-            imagenViewMesero.setFitWidth(60);
-            imagenViewMesero.setFitHeight(60);
+            imagenViewMesero.setFitWidth(70);
+            imagenViewMesero.setFitHeight(70);
             Entity mesero = entityBuilder().at(reception.add(30 * meseroId, 0)).view(imagenViewMesero).buildAndAttach();
             meserosVisuales.put(meseroId, mesero);
             return null;

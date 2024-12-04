@@ -59,7 +59,7 @@ public class ComensalThread extends Thread {
             int tiempoDeComida = 500 + random.nextInt(2000);
 
             System.out.println("Comensal " + comensal.getId() + " está comiendo.");
-            Thread.sleep(tiempoDeComida); // Tiempo de comer
+            Thread.sleep(tiempoDeComida);
 
 
             System.out.println("Comensal " + comensal.getId() + " ha terminado de comer y se va.");

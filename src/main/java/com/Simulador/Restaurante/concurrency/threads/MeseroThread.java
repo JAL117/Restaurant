@@ -35,7 +35,7 @@ public class MeseroThread extends Thread {
 
 
                 view.atenderMesa(comensal.getId(), mesa.getNumero());
-                view.moverMesero(mesero.getId(), mesa.getPosX() + 10, mesa.getPosY()-30);
+                view.moverMesero(mesero.getId(), mesa.getPosX() + 50, mesa.getPosY()-40);
                 System.out.println("Mesero " + mesero.getId() + " está atendiendo al Comensal " + comensal.getId());
 
                 Thread.sleep(500);
